@@ -127,12 +127,11 @@ function catmullRomSmooth(points, numOutputPoints) {
     return result;
   }
 
-  // Extend points at start and end for proper spline behavior
+  // Extend points at start and end - duplicate endpoints to prevent overshoot
   const extended = [
-    [2 * points[0][0] - points[1][0], 2 * points[0][1] - points[1][1]],
+    points[0],  // duplicate first point (zero velocity start)
     ...points,
-    [2 * points[points.length-1][0] - points[points.length-2][0],
-     2 * points[points.length-1][1] - points[points.length-2][1]]
+    points[points.length - 1]  // duplicate last point (zero velocity end)
   ];
 
   const result = [];

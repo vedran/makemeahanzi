@@ -983,18 +983,18 @@ module arrows_and_numbers() {
                 text("1", size=2.98, halign="center", valign="center", font="Arial:style=Bold");
 
         // Arrow 1
-        hull() { translate([63.224, 27.087]) circle(r=0.149); translate([63.319, 27.160]) circle(r=0.149); }
-        hull() { translate([63.319, 27.160]) circle(r=0.149); translate([63.415, 27.234]) circle(r=0.149); }
-        hull() { translate([63.415, 27.234]) circle(r=0.149); translate([63.510, 27.307]) circle(r=0.149); }
-        hull() { translate([63.510, 27.307]) circle(r=0.149); translate([63.605, 27.380]) circle(r=0.149); }
-        hull() { translate([63.605, 27.380]) circle(r=0.149); translate([63.701, 27.453]) circle(r=0.149); }
-        hull() { translate([63.701, 27.453]) circle(r=0.149); translate([63.796, 27.527]) circle(r=0.149); }
-        hull() { translate([63.796, 27.527]) circle(r=0.149); translate([63.891, 27.600]) circle(r=0.149); }
-        hull() { translate([63.891, 27.600]) circle(r=0.149); translate([63.987, 27.673]) circle(r=0.149); }
-        hull() { translate([63.987, 27.673]) circle(r=0.149); translate([64.082, 27.746]) circle(r=0.149); }
-        hull() { translate([64.082, 27.746]) circle(r=0.149); translate([64.177, 27.819]) circle(r=0.149); }
-        hull() { translate([64.177, 27.819]) circle(r=0.149); translate([64.273, 27.893]) circle(r=0.149); }
-        hull() { translate([64.273, 27.893]) circle(r=0.149); translate([64.368, 27.966]) circle(r=0.149); }
+        hull() { translate([63.224, 27.087]) circle(r=0.149); translate([63.279, 27.130]) circle(r=0.149); }
+        hull() { translate([63.279, 27.130]) circle(r=0.149); translate([63.348, 27.183]) circle(r=0.149); }
+        hull() { translate([63.348, 27.183]) circle(r=0.149); translate([63.429, 27.245]) circle(r=0.149); }
+        hull() { translate([63.429, 27.245]) circle(r=0.149); translate([63.520, 27.315]) circle(r=0.149); }
+        hull() { translate([63.520, 27.315]) circle(r=0.149); translate([63.619, 27.391]) circle(r=0.149); }
+        hull() { translate([63.619, 27.391]) circle(r=0.149); translate([63.724, 27.472]) circle(r=0.149); }
+        hull() { translate([63.724, 27.472]) circle(r=0.149); translate([63.833, 27.555]) circle(r=0.149); }
+        hull() { translate([63.833, 27.555]) circle(r=0.149); translate([63.944, 27.640]) circle(r=0.149); }
+        hull() { translate([63.944, 27.640]) circle(r=0.149); translate([64.055, 27.726]) circle(r=0.149); }
+        hull() { translate([64.055, 27.726]) circle(r=0.149); translate([64.164, 27.809]) circle(r=0.149); }
+        hull() { translate([64.164, 27.809]) circle(r=0.149); translate([64.269, 27.890]) circle(r=0.149); }
+        hull() { translate([64.269, 27.890]) circle(r=0.149); translate([64.368, 27.966]) circle(r=0.149); }
         hull() { translate([64.368, 27.966]) circle(r=0.149); translate([64.463, 28.039]) circle(r=0.149); }
         hull() { translate([64.463, 28.039]) circle(r=0.149); translate([64.559, 28.112]) circle(r=0.149); }
         hull() { translate([64.559, 28.112]) circle(r=0.149); translate([64.654, 28.185]) circle(r=0.149); }
@@ -1127,12 +1127,12 @@ module arrows_and_numbers() {
         hull() { translate([77.336, 35.822]) circle(r=0.149); translate([77.458, 35.868]) circle(r=0.149); }
         hull() { translate([77.458, 35.868]) circle(r=0.149); translate([77.588, 35.916]) circle(r=0.149); }
         hull() { translate([77.588, 35.916]) circle(r=0.149); translate([77.728, 35.968]) circle(r=0.149); }
-        hull() { translate([77.728, 35.968]) circle(r=0.149); translate([78.040, 36.078]) circle(r=0.149); }
-        hull() { translate([78.040, 36.078]) circle(r=0.149); translate([78.388, 36.194]) circle(r=0.149); }
-        hull() { translate([78.388, 36.194]) circle(r=0.149); translate([78.760, 36.314]) circle(r=0.149); }
-        hull() { translate([78.760, 36.314]) circle(r=0.149); translate([79.145, 36.436]) circle(r=0.149); }
-        hull() { translate([79.145, 36.436]) circle(r=0.149); translate([79.529, 36.558]) circle(r=0.149); }
-        hull() { translate([79.529, 36.558]) circle(r=0.149); translate([79.901, 36.679]) circle(r=0.149); }
+        hull() { translate([77.728, 35.968]) circle(r=0.149); translate([78.065, 36.086]) circle(r=0.149); }
+        hull() { translate([78.065, 36.086]) circle(r=0.149); translate([78.468, 36.220]) circle(r=0.149); }
+        hull() { translate([78.468, 36.220]) circle(r=0.149); translate([78.896, 36.358]) circle(r=0.149); }
+        hull() { translate([78.896, 36.358]) circle(r=0.149); translate([79.306, 36.489]) circle(r=0.149); }
+        hull() { translate([79.306, 36.489]) circle(r=0.149); translate([79.655, 36.600]) circle(r=0.149); }
+        hull() { translate([79.655, 36.600]) circle(r=0.149); translate([79.901, 36.679]) circle(r=0.149); }
         // Arrowhead 1
         polygon([[80.461, 36.539], [79.010, 36.784], [79.174, 35.826]]);
 
@@ -1142,16 +1142,16 @@ module arrows_and_numbers() {
                 text("2", size=2.98, halign="center", valign="center", font="Arial:style=Bold");
 
         // Arrow 2
-        hull() { translate([75.795, 48.919]) circle(r=0.149); translate([75.515, 48.846]) circle(r=0.149); }
-        hull() { translate([75.515, 48.846]) circle(r=0.149); translate([75.235, 48.773]) circle(r=0.149); }
-        hull() { translate([75.235, 48.773]) circle(r=0.149); translate([74.955, 48.701]) circle(r=0.149); }
-        hull() { translate([74.955, 48.701]) circle(r=0.149); translate([74.675, 48.628]) circle(r=0.149); }
-        hull() { translate([74.675, 48.628]) circle(r=0.149); translate([74.395, 48.555]) circle(r=0.149); }
-        hull() { translate([74.395, 48.555]) circle(r=0.149); translate([74.115, 48.482]) circle(r=0.149); }
-        hull() { translate([74.115, 48.482]) circle(r=0.149); translate([73.835, 48.410]) circle(r=0.149); }
-        hull() { translate([73.835, 48.410]) circle(r=0.149); translate([73.555, 48.337]) circle(r=0.149); }
-        hull() { translate([73.555, 48.337]) circle(r=0.149); translate([73.275, 48.264]) circle(r=0.149); }
-        hull() { translate([73.275, 48.264]) circle(r=0.149); translate([72.995, 48.191]) circle(r=0.149); }
+        hull() { translate([75.795, 48.919]) circle(r=0.149); translate([75.628, 48.876]) circle(r=0.149); }
+        hull() { translate([75.628, 48.876]) circle(r=0.149); translate([75.414, 48.820]) circle(r=0.149); }
+        hull() { translate([75.414, 48.820]) circle(r=0.149); translate([75.160, 48.754]) circle(r=0.149); }
+        hull() { translate([75.160, 48.754]) circle(r=0.149); translate([74.876, 48.680]) circle(r=0.149); }
+        hull() { translate([74.876, 48.680]) circle(r=0.149); translate([74.570, 48.601]) circle(r=0.149); }
+        hull() { translate([74.570, 48.601]) circle(r=0.149); translate([74.249, 48.517]) circle(r=0.149); }
+        hull() { translate([74.249, 48.517]) circle(r=0.149); translate([73.923, 48.432]) circle(r=0.149); }
+        hull() { translate([73.923, 48.432]) circle(r=0.149); translate([73.600, 48.348]) circle(r=0.149); }
+        hull() { translate([73.600, 48.348]) circle(r=0.149); translate([73.287, 48.267]) circle(r=0.149); }
+        hull() { translate([73.287, 48.267]) circle(r=0.149); translate([72.995, 48.191]) circle(r=0.149); }
         hull() { translate([72.995, 48.191]) circle(r=0.149); translate([72.715, 48.119]) circle(r=0.149); }
         hull() { translate([72.715, 48.119]) circle(r=0.149); translate([72.435, 48.046]) circle(r=0.149); }
         hull() { translate([72.435, 48.046]) circle(r=0.149); translate([72.155, 47.973]) circle(r=0.149); }
@@ -1282,16 +1282,16 @@ module arrows_and_numbers() {
         hull() { translate([37.569, 38.924]) circle(r=0.149); translate([37.273, 38.855]) circle(r=0.149); }
         hull() { translate([37.273, 38.855]) circle(r=0.149); translate([36.951, 38.791]) circle(r=0.149); }
         hull() { translate([36.951, 38.791]) circle(r=0.149); translate([36.599, 38.733]) circle(r=0.149); }
-        hull() { translate([36.599, 38.733]) circle(r=0.149); translate([36.214, 38.683]) circle(r=0.149); }
-        hull() { translate([36.214, 38.683]) circle(r=0.149); translate([35.798, 38.639]) circle(r=0.149); }
-        hull() { translate([35.798, 38.639]) circle(r=0.149); translate([35.358, 38.600]) circle(r=0.149); }
-        hull() { translate([35.358, 38.600]) circle(r=0.149); translate([34.898, 38.566]) circle(r=0.149); }
-        hull() { translate([34.898, 38.566]) circle(r=0.149); translate([34.424, 38.534]) circle(r=0.149); }
-        hull() { translate([34.424, 38.534]) circle(r=0.149); translate([33.941, 38.504]) circle(r=0.149); }
-        hull() { translate([33.941, 38.504]) circle(r=0.149); translate([33.455, 38.475]) circle(r=0.149); }
-        hull() { translate([33.455, 38.475]) circle(r=0.149); translate([32.970, 38.446]) circle(r=0.149); }
-        hull() { translate([32.970, 38.446]) circle(r=0.149); translate([32.493, 38.415]) circle(r=0.149); }
-        hull() { translate([32.493, 38.415]) circle(r=0.149); translate([32.028, 38.381]) circle(r=0.149); }
+        hull() { translate([36.599, 38.733]) circle(r=0.149); translate([36.193, 38.681]) circle(r=0.149); }
+        hull() { translate([36.193, 38.681]) circle(r=0.149); translate([35.725, 38.633]) circle(r=0.149); }
+        hull() { translate([35.725, 38.633]) circle(r=0.149); translate([35.214, 38.589]) circle(r=0.149); }
+        hull() { translate([35.214, 38.589]) circle(r=0.149); translate([34.679, 38.549]) circle(r=0.149); }
+        hull() { translate([34.679, 38.549]) circle(r=0.149); translate([34.138, 38.512]) circle(r=0.149); }
+        hull() { translate([34.138, 38.512]) circle(r=0.149); translate([33.612, 38.479]) circle(r=0.149); }
+        hull() { translate([33.612, 38.479]) circle(r=0.149); translate([33.119, 38.449]) circle(r=0.149); }
+        hull() { translate([33.119, 38.449]) circle(r=0.149); translate([32.678, 38.423]) circle(r=0.149); }
+        hull() { translate([32.678, 38.423]) circle(r=0.149); translate([32.308, 38.400]) circle(r=0.149); }
+        hull() { translate([32.308, 38.400]) circle(r=0.149); translate([32.028, 38.381]) circle(r=0.149); }
         // Arrowhead 2
         polygon([[30.871, 38.414], [32.263, 37.937], [32.257, 38.909]]);
 
@@ -1301,16 +1301,16 @@ module arrows_and_numbers() {
                 text("3", size=2.98, halign="center", valign="center", font="Arial:style=Bold");
 
         // Arrow 3
-        hull() { translate([65.422, 41.199]) circle(r=0.149); translate([65.425, 41.507]) circle(r=0.149); }
-        hull() { translate([65.425, 41.507]) circle(r=0.149); translate([65.428, 41.814]) circle(r=0.149); }
-        hull() { translate([65.428, 41.814]) circle(r=0.149); translate([65.431, 42.121]) circle(r=0.149); }
-        hull() { translate([65.431, 42.121]) circle(r=0.149); translate([65.434, 42.429]) circle(r=0.149); }
-        hull() { translate([65.434, 42.429]) circle(r=0.149); translate([65.437, 42.736]) circle(r=0.149); }
-        hull() { translate([65.437, 42.736]) circle(r=0.149); translate([65.440, 43.044]) circle(r=0.149); }
-        hull() { translate([65.440, 43.044]) circle(r=0.149); translate([65.443, 43.351]) circle(r=0.149); }
-        hull() { translate([65.443, 43.351]) circle(r=0.149); translate([65.446, 43.658]) circle(r=0.149); }
-        hull() { translate([65.446, 43.658]) circle(r=0.149); translate([65.449, 43.966]) circle(r=0.149); }
-        hull() { translate([65.449, 43.966]) circle(r=0.149); translate([65.452, 44.273]) circle(r=0.149); }
+        hull() { translate([65.422, 41.199]) circle(r=0.149); translate([65.423, 41.382]) circle(r=0.149); }
+        hull() { translate([65.423, 41.382]) circle(r=0.149); translate([65.426, 41.617]) circle(r=0.149); }
+        hull() { translate([65.426, 41.617]) circle(r=0.149); translate([65.428, 41.895]) circle(r=0.149); }
+        hull() { translate([65.428, 41.895]) circle(r=0.149); translate([65.431, 42.207]) circle(r=0.149); }
+        hull() { translate([65.431, 42.207]) circle(r=0.149); translate([65.435, 42.544]) circle(r=0.149); }
+        hull() { translate([65.435, 42.544]) circle(r=0.149); translate([65.438, 42.896]) circle(r=0.149); }
+        hull() { translate([65.438, 42.896]) circle(r=0.149); translate([65.442, 43.254]) circle(r=0.149); }
+        hull() { translate([65.442, 43.254]) circle(r=0.149); translate([65.445, 43.609]) circle(r=0.149); }
+        hull() { translate([65.445, 43.609]) circle(r=0.149); translate([65.449, 43.952]) circle(r=0.149); }
+        hull() { translate([65.449, 43.952]) circle(r=0.149); translate([65.452, 44.273]) circle(r=0.149); }
         hull() { translate([65.452, 44.273]) circle(r=0.149); translate([65.455, 44.581]) circle(r=0.149); }
         hull() { translate([65.455, 44.581]) circle(r=0.149); translate([65.458, 44.888]) circle(r=0.149); }
         hull() { translate([65.458, 44.888]) circle(r=0.149); translate([65.461, 45.195]) circle(r=0.149); }
@@ -1441,16 +1441,16 @@ module arrows_and_numbers() {
         hull() { translate([68.158, 82.065]) circle(r=0.149); translate([68.372, 82.133]) circle(r=0.149); }
         hull() { translate([68.372, 82.133]) circle(r=0.149); translate([68.620, 82.159]) circle(r=0.149); }
         hull() { translate([68.620, 82.159]) circle(r=0.149); translate([68.908, 82.139]) circle(r=0.149); }
-        hull() { translate([68.908, 82.139]) circle(r=0.149); translate([69.244, 82.061]) circle(r=0.149); }
-        hull() { translate([69.244, 82.061]) circle(r=0.149); translate([69.624, 81.925]) circle(r=0.149); }
-        hull() { translate([69.624, 81.925]) circle(r=0.149); translate([70.041, 81.741]) circle(r=0.149); }
-        hull() { translate([70.041, 81.741]) circle(r=0.149); translate([70.487, 81.520]) circle(r=0.149); }
-        hull() { translate([70.487, 81.520]) circle(r=0.149); translate([70.953, 81.271]) circle(r=0.149); }
-        hull() { translate([70.953, 81.271]) circle(r=0.149); translate([71.433, 81.006]) circle(r=0.149); }
-        hull() { translate([71.433, 81.006]) circle(r=0.149); translate([71.918, 80.733]) circle(r=0.149); }
-        hull() { translate([71.918, 80.733]) circle(r=0.149); translate([72.401, 80.464]) circle(r=0.149); }
-        hull() { translate([72.401, 80.464]) circle(r=0.149); translate([72.873, 80.209]) circle(r=0.149); }
-        hull() { translate([72.873, 80.209]) circle(r=0.149); translate([73.326, 79.977]) circle(r=0.149); }
+        hull() { translate([68.908, 82.139]) circle(r=0.149); translate([69.264, 82.051]) circle(r=0.149); }
+        hull() { translate([69.264, 82.051]) circle(r=0.149); translate([69.695, 81.890]) circle(r=0.149); }
+        hull() { translate([69.695, 81.890]) circle(r=0.149); translate([70.180, 81.673]) circle(r=0.149); }
+        hull() { translate([70.180, 81.673]) circle(r=0.149); translate([70.699, 81.416]) circle(r=0.149); }
+        hull() { translate([70.699, 81.416]) circle(r=0.149); translate([71.229, 81.136]) circle(r=0.149); }
+        hull() { translate([71.229, 81.136]) circle(r=0.149); translate([71.751, 80.850]) circle(r=0.149); }
+        hull() { translate([71.751, 80.850]) circle(r=0.149); translate([72.243, 80.574]) circle(r=0.149); }
+        hull() { translate([72.243, 80.574]) circle(r=0.149); translate([72.683, 80.326]) circle(r=0.149); }
+        hull() { translate([72.683, 80.326]) circle(r=0.149); translate([73.052, 80.121]) circle(r=0.149); }
+        hull() { translate([73.052, 80.121]) circle(r=0.149); translate([73.326, 79.977]) circle(r=0.149); }
         // Arrowhead 3
         polygon([[74.431, 79.436], [73.397, 80.484], [72.969, 79.610]]);
 
@@ -1460,16 +1460,16 @@ module arrows_and_numbers() {
                 text("4", size=2.98, halign="center", valign="center", font="Arial:style=Bold");
 
         // Arrow 4
-        hull() { translate([85.628, 70.514]) circle(r=0.149); translate([85.434, 70.440]) circle(r=0.149); }
-        hull() { translate([85.434, 70.440]) circle(r=0.149); translate([85.239, 70.368]) circle(r=0.149); }
-        hull() { translate([85.239, 70.368]) circle(r=0.149); translate([85.044, 70.296]) circle(r=0.149); }
-        hull() { translate([85.044, 70.296]) circle(r=0.149); translate([84.849, 70.224]) circle(r=0.149); }
-        hull() { translate([84.849, 70.224]) circle(r=0.149); translate([84.654, 70.152]) circle(r=0.149); }
-        hull() { translate([84.654, 70.152]) circle(r=0.149); translate([84.460, 70.079]) circle(r=0.149); }
-        hull() { translate([84.460, 70.079]) circle(r=0.149); translate([84.265, 70.005]) circle(r=0.149); }
-        hull() { translate([84.265, 70.005]) circle(r=0.149); translate([84.071, 69.930]) circle(r=0.149); }
-        hull() { translate([84.071, 69.930]) circle(r=0.149); translate([83.876, 69.854]) circle(r=0.149); }
-        hull() { translate([83.876, 69.854]) circle(r=0.149); translate([83.682, 69.775]) circle(r=0.149); }
+        hull() { translate([85.628, 70.514]) circle(r=0.149); translate([85.513, 70.470]) circle(r=0.149); }
+        hull() { translate([85.513, 70.470]) circle(r=0.149); translate([85.364, 70.415]) circle(r=0.149); }
+        hull() { translate([85.364, 70.415]) circle(r=0.149); translate([85.187, 70.350]) circle(r=0.149); }
+        hull() { translate([85.187, 70.350]) circle(r=0.149); translate([84.989, 70.277]) circle(r=0.149); }
+        hull() { translate([84.989, 70.277]) circle(r=0.149); translate([84.776, 70.198]) circle(r=0.149); }
+        hull() { translate([84.776, 70.198]) circle(r=0.149); translate([84.553, 70.114]) circle(r=0.149); }
+        hull() { translate([84.553, 70.114]) circle(r=0.149); translate([84.326, 70.028]) circle(r=0.149); }
+        hull() { translate([84.326, 70.028]) circle(r=0.149); translate([84.102, 69.942]) circle(r=0.149); }
+        hull() { translate([84.102, 69.942]) circle(r=0.149); translate([83.885, 69.857]) circle(r=0.149); }
+        hull() { translate([83.885, 69.857]) circle(r=0.149); translate([83.682, 69.775]) circle(r=0.149); }
         hull() { translate([83.682, 69.775]) circle(r=0.149); translate([83.489, 69.695]) circle(r=0.149); }
         hull() { translate([83.489, 69.695]) circle(r=0.149); translate([83.295, 69.612]) circle(r=0.149); }
         hull() { translate([83.295, 69.612]) circle(r=0.149); translate([83.102, 69.528]) circle(r=0.149); }
@@ -1600,16 +1600,16 @@ module arrows_and_numbers() {
         hull() { translate([59.242, 59.004]) circle(r=0.149); translate([59.038, 58.914]) circle(r=0.149); }
         hull() { translate([59.038, 58.914]) circle(r=0.149); translate([58.818, 58.817]) circle(r=0.149); }
         hull() { translate([58.818, 58.817]) circle(r=0.149); translate([58.578, 58.711]) circle(r=0.149); }
-        hull() { translate([58.578, 58.711]) circle(r=0.149); translate([58.316, 58.596]) circle(r=0.149); }
-        hull() { translate([58.316, 58.596]) circle(r=0.149); translate([58.034, 58.471]) circle(r=0.149); }
-        hull() { translate([58.034, 58.471]) circle(r=0.149); translate([57.736, 58.340]) circle(r=0.149); }
-        hull() { translate([57.736, 58.340]) circle(r=0.149); translate([57.425, 58.203]) circle(r=0.149); }
-        hull() { translate([57.425, 58.203]) circle(r=0.149); translate([57.105, 58.062]) circle(r=0.149); }
-        hull() { translate([57.105, 58.062]) circle(r=0.149); translate([56.779, 57.919]) circle(r=0.149); }
-        hull() { translate([56.779, 57.919]) circle(r=0.149); translate([56.451, 57.774]) circle(r=0.149); }
-        hull() { translate([56.451, 57.774]) circle(r=0.149); translate([56.124, 57.630]) circle(r=0.149); }
-        hull() { translate([56.124, 57.630]) circle(r=0.149); translate([55.802, 57.488]) circle(r=0.149); }
-        hull() { translate([55.802, 57.488]) circle(r=0.149); translate([55.488, 57.349]) circle(r=0.149); }
+        hull() { translate([58.578, 58.711]) circle(r=0.149); translate([58.302, 58.590]) circle(r=0.149); }
+        hull() { translate([58.302, 58.590]) circle(r=0.149); translate([57.985, 58.450]) circle(r=0.149); }
+        hull() { translate([57.985, 58.450]) circle(r=0.149); translate([57.639, 58.297]) circle(r=0.149); }
+        hull() { translate([57.639, 58.297]) circle(r=0.149); translate([57.277, 58.138]) circle(r=0.149); }
+        hull() { translate([57.277, 58.138]) circle(r=0.149); translate([56.912, 57.977]) circle(r=0.149); }
+        hull() { translate([56.912, 57.977]) circle(r=0.149); translate([56.557, 57.821]) circle(r=0.149); }
+        hull() { translate([56.557, 57.821]) circle(r=0.149); translate([56.224, 57.674]) circle(r=0.149); }
+        hull() { translate([56.224, 57.674]) circle(r=0.149); translate([55.927, 57.543]) circle(r=0.149); }
+        hull() { translate([55.927, 57.543]) circle(r=0.149); translate([55.677, 57.433]) circle(r=0.149); }
+        hull() { translate([55.677, 57.433]) circle(r=0.149); translate([55.488, 57.349]) circle(r=0.149); }
         // Arrowhead 4
         polygon([[54.715, 57.009], [56.183, 57.124], [55.791, 58.014]]);
 
@@ -1619,16 +1619,16 @@ module arrows_and_numbers() {
                 text("5", size=2.98, halign="center", valign="center", font="Arial:style=Bold");
 
         // Arrow 5
-        hull() { translate([48.245, 23.755]) circle(r=0.149); translate([48.212, 24.296]) circle(r=0.149); }
-        hull() { translate([48.212, 24.296]) circle(r=0.149); translate([48.181, 24.838]) circle(r=0.149); }
-        hull() { translate([48.181, 24.838]) circle(r=0.149); translate([48.153, 25.380]) circle(r=0.149); }
-        hull() { translate([48.153, 25.380]) circle(r=0.149); translate([48.125, 25.922]) circle(r=0.149); }
-        hull() { translate([48.125, 25.922]) circle(r=0.149); translate([48.096, 26.464]) circle(r=0.149); }
-        hull() { translate([48.096, 26.464]) circle(r=0.149); translate([48.065, 27.005]) circle(r=0.149); }
-        hull() { translate([48.065, 27.005]) circle(r=0.149); translate([48.030, 27.547]) circle(r=0.149); }
-        hull() { translate([48.030, 27.547]) circle(r=0.149); translate([47.989, 28.088]) circle(r=0.149); }
-        hull() { translate([47.989, 28.088]) circle(r=0.149); translate([47.941, 28.628]) circle(r=0.149); }
-        hull() { translate([47.941, 28.628]) circle(r=0.149); translate([47.884, 29.168]) circle(r=0.149); }
+        hull() { translate([48.245, 23.755]) circle(r=0.149); translate([48.226, 24.077]) circle(r=0.149); }
+        hull() { translate([48.226, 24.077]) circle(r=0.149); translate([48.204, 24.491]) circle(r=0.149); }
+        hull() { translate([48.204, 24.491]) circle(r=0.149); translate([48.180, 24.982]) circle(r=0.149); }
+        hull() { translate([48.180, 24.982]) circle(r=0.149); translate([48.151, 25.532]) circle(r=0.149); }
+        hull() { translate([48.151, 25.532]) circle(r=0.149); translate([48.119, 26.125]) circle(r=0.149); }
+        hull() { translate([48.119, 26.125]) circle(r=0.149); translate([48.083, 26.746]) circle(r=0.149); }
+        hull() { translate([48.083, 26.746]) circle(r=0.149); translate([48.041, 27.376]) circle(r=0.149); }
+        hull() { translate([48.041, 27.376]) circle(r=0.149); translate([47.995, 28.001]) circle(r=0.149); }
+        hull() { translate([47.995, 28.001]) circle(r=0.149); translate([47.943, 28.604]) circle(r=0.149); }
+        hull() { translate([47.943, 28.604]) circle(r=0.149); translate([47.884, 29.168]) circle(r=0.149); }
         hull() { translate([47.884, 29.168]) circle(r=0.149); translate([47.818, 29.706]) circle(r=0.149); }
         hull() { translate([47.818, 29.706]) circle(r=0.149); translate([47.743, 30.244]) circle(r=0.149); }
         hull() { translate([47.743, 30.244]) circle(r=0.149); translate([47.661, 30.782]) circle(r=0.149); }
@@ -1759,16 +1759,16 @@ module arrows_and_numbers() {
         hull() { translate([17.577, 88.204]) circle(r=0.149); translate([17.098, 88.191]) circle(r=0.149); }
         hull() { translate([17.098, 88.191]) circle(r=0.149); translate([16.657, 88.054]) circle(r=0.149); }
         hull() { translate([16.657, 88.054]) circle(r=0.149); translate([16.264, 87.771]) circle(r=0.149); }
-        hull() { translate([16.264, 87.771]) circle(r=0.149); translate([15.924, 87.318]) circle(r=0.149); }
-        hull() { translate([15.924, 87.318]) circle(r=0.149); translate([15.628, 86.705]) circle(r=0.149); }
-        hull() { translate([15.628, 86.705]) circle(r=0.149); translate([15.367, 85.958]) circle(r=0.149); }
-        hull() { translate([15.367, 85.958]) circle(r=0.149); translate([15.135, 85.108]) circle(r=0.149); }
-        hull() { translate([15.135, 85.108]) circle(r=0.149); translate([14.924, 84.181]) circle(r=0.149); }
-        hull() { translate([14.924, 84.181]) circle(r=0.149); translate([14.726, 83.208]) circle(r=0.149); }
-        hull() { translate([14.726, 83.208]) circle(r=0.149); translate([14.532, 82.215]) circle(r=0.149); }
-        hull() { translate([14.532, 82.215]) circle(r=0.149); translate([14.336, 81.232]) circle(r=0.149); }
-        hull() { translate([14.336, 81.232]) circle(r=0.149); translate([14.130, 80.286]) circle(r=0.149); }
-        hull() { translate([14.130, 80.286]) circle(r=0.149); translate([13.906, 79.407]) circle(r=0.149); }
+        hull() { translate([16.264, 87.771]) circle(r=0.149); translate([15.913, 87.281]) circle(r=0.149); }
+        hull() { translate([15.913, 87.281]) circle(r=0.149); translate([15.590, 86.571]) circle(r=0.149); }
+        hull() { translate([15.590, 86.571]) circle(r=0.149); translate([15.293, 85.695]) circle(r=0.149); }
+        hull() { translate([15.293, 85.695]) circle(r=0.149); translate([15.022, 84.706]) circle(r=0.149); }
+        hull() { translate([15.022, 84.706]) circle(r=0.149); translate([14.777, 83.659]) circle(r=0.149); }
+        hull() { translate([14.777, 83.659]) circle(r=0.149); translate([14.556, 82.605]) circle(r=0.149); }
+        hull() { translate([14.556, 82.605]) circle(r=0.149); translate([14.359, 81.600]) circle(r=0.149); }
+        hull() { translate([14.359, 81.600]) circle(r=0.149); translate([14.185, 80.696]) circle(r=0.149); }
+        hull() { translate([14.185, 80.696]) circle(r=0.149); translate([14.035, 79.948]) circle(r=0.149); }
+        hull() { translate([14.035, 79.948]) circle(r=0.149); translate([13.906, 79.407]) circle(r=0.149); }
         // Arrowhead 5
         polygon([[13.526, 77.265], [14.330, 78.497], [13.386, 78.730]]);
 
@@ -1778,16 +1778,16 @@ module arrows_and_numbers() {
                 text("6", size=2.98, halign="center", valign="center", font="Arial:style=Bold");
 
         // Arrow 6
-        hull() { translate([29.312, 54.296]) circle(r=0.149); translate([29.432, 54.470]) circle(r=0.149); }
-        hull() { translate([29.432, 54.470]) circle(r=0.149); translate([29.552, 54.644]) circle(r=0.149); }
-        hull() { translate([29.552, 54.644]) circle(r=0.149); translate([29.672, 54.818]) circle(r=0.149); }
-        hull() { translate([29.672, 54.818]) circle(r=0.149); translate([29.791, 54.992]) circle(r=0.149); }
-        hull() { translate([29.791, 54.992]) circle(r=0.149); translate([29.911, 55.166]) circle(r=0.149); }
-        hull() { translate([29.911, 55.166]) circle(r=0.149); translate([30.031, 55.341]) circle(r=0.149); }
-        hull() { translate([30.031, 55.341]) circle(r=0.149); translate([30.151, 55.515]) circle(r=0.149); }
-        hull() { translate([30.151, 55.515]) circle(r=0.149); translate([30.271, 55.689]) circle(r=0.149); }
-        hull() { translate([30.271, 55.689]) circle(r=0.149); translate([30.391, 55.863]) circle(r=0.149); }
-        hull() { translate([30.391, 55.863]) circle(r=0.149); translate([30.511, 56.037]) circle(r=0.149); }
+        hull() { translate([29.312, 54.296]) circle(r=0.149); translate([29.383, 54.400]) circle(r=0.149); }
+        hull() { translate([29.383, 54.400]) circle(r=0.149); translate([29.475, 54.533]) circle(r=0.149); }
+        hull() { translate([29.475, 54.533]) circle(r=0.149); translate([29.583, 54.690]) circle(r=0.149); }
+        hull() { translate([29.583, 54.690]) circle(r=0.149); translate([29.705, 54.867]) circle(r=0.149); }
+        hull() { translate([29.705, 54.867]) circle(r=0.149); translate([29.836, 55.058]) circle(r=0.149); }
+        hull() { translate([29.836, 55.058]) circle(r=0.149); translate([29.974, 55.257]) circle(r=0.149); }
+        hull() { translate([29.974, 55.257]) circle(r=0.149); translate([30.113, 55.460]) circle(r=0.149); }
+        hull() { translate([30.113, 55.460]) circle(r=0.149); translate([30.252, 55.661]) circle(r=0.149); }
+        hull() { translate([30.252, 55.661]) circle(r=0.149); translate([30.385, 55.855]) circle(r=0.149); }
+        hull() { translate([30.385, 55.855]) circle(r=0.149); translate([30.511, 56.037]) circle(r=0.149); }
         hull() { translate([30.511, 56.037]) circle(r=0.149); translate([30.630, 56.211]) circle(r=0.149); }
         hull() { translate([30.630, 56.211]) circle(r=0.149); translate([30.750, 56.385]) circle(r=0.149); }
         hull() { translate([30.750, 56.385]) circle(r=0.149); translate([30.870, 56.559]) circle(r=0.149); }
@@ -1918,16 +1918,16 @@ module arrows_and_numbers() {
         hull() { translate([50.029, 73.591]) circle(r=0.149); translate([50.227, 73.695]) circle(r=0.149); }
         hull() { translate([50.227, 73.695]) circle(r=0.149); translate([50.441, 73.805]) circle(r=0.149); }
         hull() { translate([50.441, 73.805]) circle(r=0.149); translate([50.675, 73.924]) circle(r=0.149); }
-        hull() { translate([50.675, 73.924]) circle(r=0.149); translate([50.931, 74.051]) circle(r=0.149); }
-        hull() { translate([50.931, 74.051]) circle(r=0.149); translate([51.207, 74.187]) circle(r=0.149); }
-        hull() { translate([51.207, 74.187]) circle(r=0.149); translate([51.499, 74.328]) circle(r=0.149); }
-        hull() { translate([51.499, 74.328]) circle(r=0.149); translate([51.804, 74.475]) circle(r=0.149); }
-        hull() { translate([51.804, 74.475]) circle(r=0.149); translate([52.119, 74.626]) circle(r=0.149); }
-        hull() { translate([52.119, 74.626]) circle(r=0.149); translate([52.440, 74.779]) circle(r=0.149); }
-        hull() { translate([52.440, 74.779]) circle(r=0.149); translate([52.762, 74.933]) circle(r=0.149); }
-        hull() { translate([52.762, 74.933]) circle(r=0.149); translate([53.084, 75.087]) circle(r=0.149); }
-        hull() { translate([53.084, 75.087]) circle(r=0.149); translate([53.401, 75.239]) circle(r=0.149); }
-        hull() { translate([53.401, 75.239]) circle(r=0.149); translate([53.710, 75.387]) circle(r=0.149); }
+        hull() { translate([50.675, 73.924]) circle(r=0.149); translate([50.944, 74.058]) circle(r=0.149); }
+        hull() { translate([50.944, 74.058]) circle(r=0.149); translate([51.255, 74.210]) circle(r=0.149); }
+        hull() { translate([51.255, 74.210]) circle(r=0.149); translate([51.595, 74.374]) circle(r=0.149); }
+        hull() { translate([51.595, 74.374]) circle(r=0.149); translate([51.950, 74.546]) circle(r=0.149); }
+        hull() { translate([51.950, 74.546]) circle(r=0.149); translate([52.309, 74.718]) circle(r=0.149); }
+        hull() { translate([52.309, 74.718]) circle(r=0.149); translate([52.658, 74.885]) circle(r=0.149); }
+        hull() { translate([52.658, 74.885]) circle(r=0.149); translate([52.986, 75.041]) circle(r=0.149); }
+        hull() { translate([52.986, 75.041]) circle(r=0.149); translate([53.278, 75.181]) circle(r=0.149); }
+        hull() { translate([53.278, 75.181]) circle(r=0.149); translate([53.524, 75.298]) circle(r=0.149); }
+        hull() { translate([53.524, 75.298]) circle(r=0.149); translate([53.710, 75.387]) circle(r=0.149); }
         // Arrowhead 6
         polygon([[54.523, 75.619], [53.054, 75.532], [53.429, 74.635]]);
 
@@ -1937,23 +1937,23 @@ module arrows_and_numbers() {
                 text("7", size=2.98, halign="center", valign="center", font="Arial:style=Bold");
 
         // Arrow 7
-        hull() { translate([30.389, 21.572]) circle(r=0.149); translate([30.349, 21.590]) circle(r=0.149); }
-        hull() { translate([30.349, 21.590]) circle(r=0.149); translate([30.310, 21.608]) circle(r=0.149); }
-        hull() { translate([30.310, 21.608]) circle(r=0.149); translate([30.271, 21.626]) circle(r=0.149); }
-        hull() { translate([30.271, 21.626]) circle(r=0.149); translate([30.231, 21.643]) circle(r=0.149); }
-        hull() { translate([30.231, 21.643]) circle(r=0.149); translate([30.192, 21.661]) circle(r=0.149); }
-        hull() { translate([30.192, 21.661]) circle(r=0.149); translate([30.152, 21.679]) circle(r=0.149); }
-        hull() { translate([30.152, 21.679]) circle(r=0.149); translate([30.113, 21.697]) circle(r=0.149); }
-        hull() { translate([30.113, 21.697]) circle(r=0.149); translate([30.074, 21.715]) circle(r=0.149); }
-        hull() { translate([30.074, 21.715]) circle(r=0.149); translate([30.034, 21.732]) circle(r=0.149); }
-        hull() { translate([30.034, 21.732]) circle(r=0.149); translate([29.995, 21.750]) circle(r=0.149); }
-        hull() { translate([29.995, 21.750]) circle(r=0.149); translate([29.956, 21.768]) circle(r=0.149); }
-        hull() { translate([29.956, 21.768]) circle(r=0.149); translate([29.916, 21.786]) circle(r=0.149); }
-        hull() { translate([29.916, 21.786]) circle(r=0.149); translate([29.877, 21.804]) circle(r=0.149); }
-        hull() { translate([29.877, 21.804]) circle(r=0.149); translate([29.837, 21.821]) circle(r=0.149); }
-        hull() { translate([29.837, 21.821]) circle(r=0.149); translate([29.798, 21.839]) circle(r=0.149); }
-        hull() { translate([29.798, 21.839]) circle(r=0.149); translate([29.759, 21.857]) circle(r=0.149); }
-        hull() { translate([29.759, 21.857]) circle(r=0.149); translate([29.719, 21.875]) circle(r=0.149); }
+        hull() { translate([30.389, 21.572]) circle(r=0.149); translate([30.367, 21.582]) circle(r=0.149); }
+        hull() { translate([30.367, 21.582]) circle(r=0.149); translate([30.341, 21.594]) circle(r=0.149); }
+        hull() { translate([30.341, 21.594]) circle(r=0.149); translate([30.311, 21.608]) circle(r=0.149); }
+        hull() { translate([30.311, 21.608]) circle(r=0.149); translate([30.277, 21.623]) circle(r=0.149); }
+        hull() { translate([30.277, 21.623]) circle(r=0.149); translate([30.241, 21.639]) circle(r=0.149); }
+        hull() { translate([30.241, 21.639]) circle(r=0.149); translate([30.202, 21.657]) circle(r=0.149); }
+        hull() { translate([30.202, 21.657]) circle(r=0.149); translate([30.161, 21.675]) circle(r=0.149); }
+        hull() { translate([30.161, 21.675]) circle(r=0.149); translate([30.118, 21.695]) circle(r=0.149); }
+        hull() { translate([30.118, 21.695]) circle(r=0.149); translate([30.074, 21.715]) circle(r=0.149); }
+        hull() { translate([30.074, 21.715]) circle(r=0.149); translate([30.028, 21.735]) circle(r=0.149); }
+        hull() { translate([30.028, 21.735]) circle(r=0.149); translate([29.983, 21.756]) circle(r=0.149); }
+        hull() { translate([29.983, 21.756]) circle(r=0.149); translate([29.937, 21.776]) circle(r=0.149); }
+        hull() { translate([29.937, 21.776]) circle(r=0.149); translate([29.891, 21.797]) circle(r=0.149); }
+        hull() { translate([29.891, 21.797]) circle(r=0.149); translate([29.846, 21.817]) circle(r=0.149); }
+        hull() { translate([29.846, 21.817]) circle(r=0.149); translate([29.802, 21.837]) circle(r=0.149); }
+        hull() { translate([29.802, 21.837]) circle(r=0.149); translate([29.760, 21.856]) circle(r=0.149); }
+        hull() { translate([29.760, 21.856]) circle(r=0.149); translate([29.719, 21.875]) circle(r=0.149); }
         hull() { translate([29.719, 21.875]) circle(r=0.149); translate([29.680, 21.892]) circle(r=0.149); }
         hull() { translate([29.680, 21.892]) circle(r=0.149); translate([29.641, 21.910]) circle(r=0.149); }
         hull() { translate([29.641, 21.910]) circle(r=0.149); translate([29.601, 21.928]) circle(r=0.149); }
@@ -2073,20 +2073,20 @@ module arrows_and_numbers() {
         hull() { translate([25.700, 24.649]) circle(r=0.149); translate([25.667, 24.685]) circle(r=0.149); }
         hull() { translate([25.667, 24.685]) circle(r=0.149); translate([25.632, 24.724]) circle(r=0.149); }
         hull() { translate([25.632, 24.724]) circle(r=0.149); translate([25.595, 24.764]) circle(r=0.149); }
-        hull() { translate([25.595, 24.764]) circle(r=0.149); translate([25.547, 24.816]) circle(r=0.149); }
-        hull() { translate([25.547, 24.816]) circle(r=0.149); translate([25.497, 24.871]) circle(r=0.149); }
-        hull() { translate([25.497, 24.871]) circle(r=0.149); translate([25.445, 24.928]) circle(r=0.149); }
-        hull() { translate([25.445, 24.928]) circle(r=0.149); translate([25.390, 24.988]) circle(r=0.149); }
-        hull() { translate([25.390, 24.988]) circle(r=0.149); translate([25.334, 25.050]) circle(r=0.149); }
-        hull() { translate([25.334, 25.050]) circle(r=0.149); translate([25.276, 25.113]) circle(r=0.149); }
-        hull() { translate([25.276, 25.113]) circle(r=0.149); translate([25.217, 25.178]) circle(r=0.149); }
-        hull() { translate([25.217, 25.178]) circle(r=0.149); translate([25.158, 25.243]) circle(r=0.149); }
-        hull() { translate([25.158, 25.243]) circle(r=0.149); translate([25.098, 25.309]) circle(r=0.149); }
-        hull() { translate([25.098, 25.309]) circle(r=0.149); translate([25.038, 25.375]) circle(r=0.149); }
-        hull() { translate([25.038, 25.375]) circle(r=0.149); translate([24.978, 25.440]) circle(r=0.149); }
-        hull() { translate([24.978, 25.440]) circle(r=0.149); translate([24.919, 25.505]) circle(r=0.149); }
-        hull() { translate([24.919, 25.505]) circle(r=0.149); translate([24.860, 25.570]) circle(r=0.149); }
-        hull() { translate([24.860, 25.570]) circle(r=0.149); translate([24.803, 25.632]) circle(r=0.149); }
+        hull() { translate([25.595, 24.764]) circle(r=0.149); translate([25.545, 24.818]) circle(r=0.149); }
+        hull() { translate([25.545, 24.818]) circle(r=0.149); translate([25.490, 24.878]) circle(r=0.149); }
+        hull() { translate([25.490, 24.878]) circle(r=0.149); translate([25.430, 24.944]) circle(r=0.149); }
+        hull() { translate([25.430, 24.944]) circle(r=0.149); translate([25.367, 25.014]) circle(r=0.149); }
+        hull() { translate([25.367, 25.014]) circle(r=0.149); translate([25.301, 25.086]) circle(r=0.149); }
+        hull() { translate([25.301, 25.086]) circle(r=0.149); translate([25.235, 25.159]) circle(r=0.149); }
+        hull() { translate([25.235, 25.159]) circle(r=0.149); translate([25.168, 25.232]) circle(r=0.149); }
+        hull() { translate([25.168, 25.232]) circle(r=0.149); translate([25.102, 25.304]) circle(r=0.149); }
+        hull() { translate([25.102, 25.304]) circle(r=0.149); translate([25.039, 25.373]) circle(r=0.149); }
+        hull() { translate([25.039, 25.373]) circle(r=0.149); translate([24.980, 25.438]) circle(r=0.149); }
+        hull() { translate([24.980, 25.438]) circle(r=0.149); translate([24.926, 25.498]) circle(r=0.149); }
+        hull() { translate([24.926, 25.498]) circle(r=0.149); translate([24.877, 25.551]) circle(r=0.149); }
+        hull() { translate([24.877, 25.551]) circle(r=0.149); translate([24.836, 25.596]) circle(r=0.149); }
+        hull() { translate([24.836, 25.596]) circle(r=0.149); translate([24.803, 25.632]) circle(r=0.149); }
         // Arrowhead 7
         polygon([[24.605, 25.849], [25.182, 24.495], [25.900, 25.151]]);
 
