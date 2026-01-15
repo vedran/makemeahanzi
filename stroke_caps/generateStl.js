@@ -107,69 +107,26 @@ function getMedianLength(median) {
 }
 
 /**
- * Catmull-Rom spline interpolation for smooth curves
- * @param {Array<Array<number>>} points - Control points [[x,y], ...]
- * @param {number} numOutputPoints - Number of output points to generate
+ * Simple moving average smoothing
+ * @param {Array<Array<number>>} points - Points to smooth [[x,y], ...]
+ * @param {number} windowSize - Number of points to average (should be odd)
  * @returns {Array<Array<number>>} Smoothed points
  */
-function catmullRomSmooth(points, numOutputPoints) {
-  if (points.length < 2) return points;
-  if (points.length === 2) {
-    // Just linearly interpolate for 2 points
-    const result = [];
-    for (let i = 0; i < numOutputPoints; i++) {
-      const t = i / (numOutputPoints - 1);
-      result.push([
-        points[0][0] + t * (points[1][0] - points[0][0]),
-        points[0][1] + t * (points[1][1] - points[0][1])
-      ]);
-    }
-    return result;
-  }
+function movingAverageSmooth(points, windowSize = 5) {
+  if (points.length < windowSize) return points;
 
-  // Extend points at start and end - duplicate endpoints to prevent overshoot
-  const extended = [
-    points[0],  // duplicate first point (zero velocity start)
-    ...points,
-    points[points.length - 1]  // duplicate last point (zero velocity end)
-  ];
-
+  const halfWindow = Math.floor(windowSize / 2);
   const result = [];
-  const segments = points.length - 1;
-  const pointsPerSegment = Math.ceil(numOutputPoints / segments);
 
-  for (let i = 0; i < segments; i++) {
-    const p0 = extended[i];
-    const p1 = extended[i + 1];
-    const p2 = extended[i + 2];
-    const p3 = extended[i + 3];
-
-    const numPts = (i === segments - 1) ? numOutputPoints - result.length : pointsPerSegment;
-
-    for (let j = 0; j < numPts; j++) {
-      const t = j / numPts;
-      const t2 = t * t;
-      const t3 = t2 * t;
-
-      // Catmull-Rom basis functions
-      const x = 0.5 * (
-        (2 * p1[0]) +
-        (-p0[0] + p2[0]) * t +
-        (2 * p0[0] - 5 * p1[0] + 4 * p2[0] - p3[0]) * t2 +
-        (-p0[0] + 3 * p1[0] - 3 * p2[0] + p3[0]) * t3
-      );
-      const y = 0.5 * (
-        (2 * p1[1]) +
-        (-p0[1] + p2[1]) * t +
-        (2 * p0[1] - 5 * p1[1] + 4 * p2[1] - p3[1]) * t2 +
-        (-p0[1] + 3 * p1[1] - 3 * p2[1] + p3[1]) * t3
-      );
-      result.push([x, y]);
+  for (let i = 0; i < points.length; i++) {
+    let sumX = 0, sumY = 0, count = 0;
+    for (let j = Math.max(0, i - halfWindow); j <= Math.min(points.length - 1, i + halfWindow); j++) {
+      sumX += points[j][0];
+      sumY += points[j][1];
+      count++;
     }
+    result.push([sumX / count, sumY / count]);
   }
-
-  // Ensure we end at the last point
-  result.push(points[points.length - 1]);
 
   return result;
 }
@@ -291,13 +248,11 @@ module arrows_and_numbers() {
     // Build arrow line as a thick path (series of circles connected)
     scadCode += `        // Arrow ${strokeNum}\n`;
 
-    // Generate coarse arrow control points (don't include arrowhead base - it causes spline overshoot)
+    // Sample arrow points finely from the median
     const rawArrowPoints = [];
-    for (let t = arrowStartPercent; t <= arrowTipPercent - 0.05; t += 0.05) {
+    for (let t = arrowStartPercent; t <= arrowTipPercent - 0.02; t += 0.01) {
       rawArrowPoints.push(interpolateMedianPoint(median, t));
     }
-    // End the line close to where arrowhead starts
-    rawArrowPoints.push(interpolateMedianPoint(median, arrowTipPercent - 0.02));
 
     // Arrow tip and direction
     const arrowTipPoint = interpolateMedianPoint(median, arrowTipPercent);
@@ -312,8 +267,10 @@ module arrows_and_numbers() {
     const baseX = arrowTipPoint[0] - dirX * arrowSize;
     const baseY = arrowTipPoint[1] - dirY * arrowSize;
 
-    // Apply Catmull-Rom smoothing for smooth curves
-    const smoothedPoints = catmullRomSmooth(rawArrowPoints, 150);
+    // Apply moving average smoothing (multiple passes for extra smoothness)
+    let smoothedPoints = movingAverageSmooth(rawArrowPoints, 7);
+    smoothedPoints = movingAverageSmooth(smoothedPoints, 5);
+    smoothedPoints = movingAverageSmooth(smoothedPoints, 3);
 
     // Create arrow line as sequential hulls between point pairs (follows curve properly)
     const lineRadius = (arrowLineWidth / 2 * SCALE).toFixed(3);
