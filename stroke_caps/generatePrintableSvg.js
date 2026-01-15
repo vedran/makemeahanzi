@@ -11,6 +11,19 @@ const {
 } = require('./generateDirectionalSvgs.js');
 
 /**
+ * Calculate total length of a median path
+ */
+function getMedianLength(median) {
+  let totalLength = 0;
+  for (let i = 1; i < median.length; i++) {
+    const [x1, y1] = median[i - 1];
+    const [x2, y2] = median[i];
+    totalLength += Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+  }
+  return totalLength;
+}
+
+/**
  * Generate a printable SVG for a character (black strokes, white arrows/numbers)
  * Designed for 3D printing with two colors
  * @param {string} char - Character to generate SVG for
@@ -40,46 +53,70 @@ function generatePrintableSvg(char, options = {}) {
     strokePaths += `
         <path d="${strokePath}" class="stroke"/>`;
 
-    // Position number at 12% along the stroke path (inside the stroke, not at edge)
-    const numberPosition = interpolateMedianPoint(median, 0.12);
+    // Calculate stroke length to determine adaptive positioning
+    const strokeLength = getMedianLength(median);
+
+    // Adaptive positioning based on stroke length
+    // Short strokes (< 150): number at 30%, arrow starts at 45%
+    // Medium strokes (150-400): number at 15%, arrow starts at 25%
+    // Long strokes (> 400): number at 8%, arrow starts at 15%
+    let numberPercent, arrowStartPercent;
+    if (strokeLength < 150) {
+      numberPercent = 0.30;
+      arrowStartPercent = 0.45;
+    } else if (strokeLength < 400) {
+      numberPercent = 0.15;
+      arrowStartPercent = 0.25;
+    } else {
+      numberPercent = 0.08;
+      arrowStartPercent = 0.15;
+    }
+
+    // Position number along the stroke path
+    const numberPosition = interpolateMedianPoint(median, numberPercent);
     const [numX, numY] = numberPosition;
 
-    // Generate arrow starting AFTER the number (from 20% to 92%)
-    const arrowStartPoint = interpolateMedianPoint(median, 0.20);
-    const arrowEndPoint = interpolateMedianPoint(median, 0.92);
+    // Arrow end point (leave room for arrowhead)
+    const arrowEndPercent = 0.88;
+    const arrowEndPoint = interpolateMedianPoint(median, arrowEndPercent);
 
-    // Build arrow line path from 20% to ~87% (leaving room for arrowhead)
+    // Build arrow line path
+    const arrowStartPoint = interpolateMedianPoint(median, arrowStartPercent);
     let linePath = `M ${arrowStartPoint[0]} ${arrowStartPoint[1]}`;
-    for (let t = 0.25; t <= 0.87; t += 0.05) {
+
+    // Add intermediate points along the path
+    for (let t = arrowStartPercent + 0.05; t <= arrowEndPercent - 0.05; t += 0.05) {
       const pt = interpolateMedianPoint(median, t);
       linePath += ` L ${pt[0]} ${pt[1]}`;
     }
-    const arrowBasePoint = interpolateMedianPoint(median, 0.87);
+
+    // End the line at the arrowhead base position
+    const arrowBasePoint = interpolateMedianPoint(median, arrowEndPercent - 0.03);
     linePath += ` L ${arrowBasePoint[0]} ${arrowBasePoint[1]}`;
 
     // Calculate arrowhead direction and position
-    const directionPoint = interpolateMedianPoint(median, 0.82);
+    const directionPoint = interpolateMedianPoint(median, arrowEndPercent - 0.08);
     const dx = arrowEndPoint[0] - directionPoint[0];
     const dy = arrowEndPoint[1] - directionPoint[1];
     const length = Math.sqrt(dx * dx + dy * dy);
     const dirX = length > 0 ? dx / length : 1;
     const dirY = length > 0 ? dy / length : 0;
 
-    // Generate arrowhead
+    // Generate arrowhead - position it so base connects with line
     const headWidth = arrowSize * 0.7;
     const perpX = -dirY;
     const perpY = dirX;
     const tipX = arrowEndPoint[0];
     const tipY = arrowEndPoint[1];
-    const baseX = arrowEndPoint[0] - dirX * arrowSize;
-    const baseY = arrowEndPoint[1] - dirY * arrowSize;
+    const baseX = tipX - dirX * arrowSize;
+    const baseY = tipY - dirY * arrowSize;
     const wing1X = baseX + perpX * (headWidth / 2);
     const wing1Y = baseY + perpY * (headWidth / 2);
     const wing2X = baseX - perpX * (headWidth / 2);
     const wing2Y = baseY - perpY * (headWidth / 2);
     const headPath = `M ${tipX} ${tipY} L ${wing1X} ${wing1Y} L ${wing2X} ${wing2Y} Z`;
 
-    // Add white arrow (no outline needed since it's inside black stroke)
+    // Add white arrow
     arrows += `
         <path d="${linePath}" class="arrow-line"/>
         <path d="${headPath}" class="arrow-head"/>`;
