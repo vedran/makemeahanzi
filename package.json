@@ -7,6 +7,14 @@
     "test": "node --test",
     "generate-directional": "node stroke_caps/generateDirectionalSvgs.js"
   },
-  "keywords": ["chinese", "hanzi", "stroke-order", "svg"],
-  "license": "MIT"
+  "keywords": [
+    "chinese",
+    "hanzi",
+    "stroke-order",
+    "svg"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "sharp": "^0.34.5"
+  }
 }
