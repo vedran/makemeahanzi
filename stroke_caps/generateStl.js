@@ -292,11 +292,12 @@ module arrows_and_numbers() {
     // Build arrow line as a thick path (series of circles connected)
     scadCode += `        // Arrow ${strokeNum}\n`;
 
-    // Generate coarse arrow control points
+    // Generate coarse arrow control points (don't include arrowhead base - it causes spline overshoot)
     const rawArrowPoints = [];
     for (let t = arrowStartPercent; t <= arrowTipPercent - 0.05; t += 0.05) {
       rawArrowPoints.push(interpolateMedianPoint(median, t));
     }
+    // End the line close to where arrowhead starts
     rawArrowPoints.push(interpolateMedianPoint(median, arrowTipPercent - 0.02));
 
     // Arrow tip and direction
@@ -308,10 +309,9 @@ module arrows_and_numbers() {
     const dirX = len > 0 ? dx / len : 1;
     const dirY = len > 0 ? dy / len : 0;
 
-    // Arrowhead base
+    // Arrowhead base (used for arrowhead polygon, NOT for smoothed line)
     const baseX = arrowTipPoint[0] - dirX * arrowSize;
     const baseY = arrowTipPoint[1] - dirY * arrowSize;
-    rawArrowPoints.push([baseX, baseY]);
 
     // Apply Catmull-Rom smoothing for smooth curves
     const smoothedPoints = catmullRomSmooth(rawArrowPoints, 150);
