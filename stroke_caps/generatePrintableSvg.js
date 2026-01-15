@@ -36,7 +36,7 @@ function generatePrintableSvg(char, options = {}) {
     return null;
   }
 
-  const arrowSize = options?.arrowSize || 20;
+  const arrowSize = options?.arrowSize || 14;
   const { strokes, medians } = data;
   const strokeCount = strokes.length;
 
@@ -141,7 +141,7 @@ function generatePrintableSvg(char, options = {}) {
         .arrow-line {
             fill: none;
             stroke: #FFFFFF;
-            stroke-width: 8px;
+            stroke-width: 4px;
             stroke-linecap: round;
             stroke-linejoin: round;
         }
@@ -151,7 +151,7 @@ function generatePrintableSvg(char, options = {}) {
         }
         .stroke-number {
             font-family: Helvetica, Arial, sans-serif;
-            font-size: 45px;
+            font-size: 30px;
             fill: #FFFFFF;
             font-weight: 800;
             text-anchor: middle;

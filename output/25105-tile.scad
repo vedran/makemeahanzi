@@ -17,15 +17,14 @@ module character_tile() {
         // Base plate with rounded corners
         rounded_plate();
 
-        // Recessed character (black)
+        // Recessed character (black), but with arrows/numbers cut out
+        // This leaves arrows/numbers at base plate level (same color as plate)
         translate([0, 0, recess_start])
             linear_extrude(height = plate_height)
-                character_strokes();
-
-        // Deeper recess for arrows and numbers (white inlay)
-        translate([0, 0, recess_start + arrow_recess])
-            linear_extrude(height = plate_height)
-                arrows_and_numbers();
+                difference() {
+                    character_strokes();
+                    arrows_and_numbers();
+                }
     }
 }
 
@@ -980,249 +979,249 @@ module arrows_and_numbers() {
     union() {
         // Number 1
         translate([60.478, 26.825])
-            text("1", size=4.46, halign="center", valign="center", font="Arial:style=Bold");
+            text("1", size=2.98, halign="center", valign="center", font="Arial:style=Bold");
 
         // Arrow 1
         hull() {
-            translate([63.224, 27.087]) circle(r=0.397);
-            translate([63.910, 27.614]) circle(r=0.397);
-            translate([64.597, 28.142]) circle(r=0.397);
-            translate([65.283, 28.669]) circle(r=0.397);
-            translate([65.970, 29.196]) circle(r=0.397);
-            translate([66.656, 29.723]) circle(r=0.397);
-            translate([67.343, 30.250]) circle(r=0.397);
-            translate([68.029, 30.777]) circle(r=0.397);
-            translate([68.757, 31.243]) circle(r=0.397);
-            translate([69.505, 31.678]) circle(r=0.397);
-            translate([70.254, 32.113]) circle(r=0.397);
-            translate([71.003, 32.547]) circle(r=0.397);
-            translate([71.751, 32.982]) circle(r=0.397);
-            translate([72.500, 33.416]) circle(r=0.397);
-            translate([73.248, 33.851]) circle(r=0.397);
-            translate([73.997, 34.286]) circle(r=0.397);
-            translate([74.794, 34.576]) circle(r=0.397);
-            translate([75.653, 34.683]) circle(r=0.397);
-            translate([76.274, 35.163]) circle(r=0.397);
-            translate([76.915, 35.672]) circle(r=0.397);
-            translate([77.728, 35.968]) circle(r=0.397);
-            translate([78.541, 36.264]) circle(r=0.397);
-            translate([79.901, 36.679]) circle(r=0.397);
-            translate([78.505, 36.205]) circle(r=0.397);
+            translate([63.224, 27.087]) circle(r=0.149);
+            translate([63.910, 27.614]) circle(r=0.149);
+            translate([64.597, 28.142]) circle(r=0.149);
+            translate([65.283, 28.669]) circle(r=0.149);
+            translate([65.970, 29.196]) circle(r=0.149);
+            translate([66.656, 29.723]) circle(r=0.149);
+            translate([67.343, 30.250]) circle(r=0.149);
+            translate([68.029, 30.777]) circle(r=0.149);
+            translate([68.757, 31.243]) circle(r=0.149);
+            translate([69.505, 31.678]) circle(r=0.149);
+            translate([70.254, 32.113]) circle(r=0.149);
+            translate([71.003, 32.547]) circle(r=0.149);
+            translate([71.751, 32.982]) circle(r=0.149);
+            translate([72.500, 33.416]) circle(r=0.149);
+            translate([73.248, 33.851]) circle(r=0.149);
+            translate([73.997, 34.286]) circle(r=0.149);
+            translate([74.794, 34.576]) circle(r=0.149);
+            translate([75.653, 34.683]) circle(r=0.149);
+            translate([76.274, 35.163]) circle(r=0.149);
+            translate([76.915, 35.672]) circle(r=0.149);
+            translate([77.728, 35.968]) circle(r=0.149);
+            translate([78.541, 36.264]) circle(r=0.149);
+            translate([79.901, 36.679]) circle(r=0.149);
+            translate([79.092, 36.305]) circle(r=0.149);
         }
         // Arrowhead 1
-        polygon([[80.461, 36.539], [78.388, 36.890], [78.622, 35.520]]);
+        polygon([[80.461, 36.539], [79.010, 36.784], [79.174, 35.826]]);
 
         // Number 2
         translate([79.757, 49.729])
-            text("2", size=4.46, halign="center", valign="center", font="Arial:style=Bold");
+            text("2", size=2.98, halign="center", valign="center", font="Arial:style=Bold");
 
         // Arrow 2
         hull() {
-            translate([75.795, 48.919]) circle(r=0.397);
-            translate([74.115, 48.482]) circle(r=0.397);
-            translate([72.435, 48.046]) circle(r=0.397);
-            translate([70.755, 47.609]) circle(r=0.397);
-            translate([69.075, 47.173]) circle(r=0.397);
-            translate([67.396, 46.736]) circle(r=0.397);
-            translate([65.716, 46.300]) circle(r=0.397);
-            translate([64.036, 45.863]) circle(r=0.397);
-            translate([62.356, 45.427]) circle(r=0.397);
-            translate([60.676, 44.990]) circle(r=0.397);
-            translate([58.997, 44.554]) circle(r=0.397);
-            translate([57.317, 44.117]) circle(r=0.397);
-            translate([55.637, 43.681]) circle(r=0.397);
-            translate([53.957, 43.244]) circle(r=0.397);
-            translate([52.277, 42.808]) circle(r=0.397);
-            translate([50.598, 42.371]) circle(r=0.397);
-            translate([48.918, 41.935]) circle(r=0.397);
-            translate([47.238, 41.498]) circle(r=0.397);
-            translate([45.558, 41.062]) circle(r=0.397);
-            translate([43.878, 40.625]) circle(r=0.397);
-            translate([42.199, 40.189]) circle(r=0.397);
-            translate([40.519, 39.752]) circle(r=0.397);
-            translate([38.839, 39.316]) circle(r=0.397);
-            translate([37.159, 38.879]) circle(r=0.397);
-            translate([35.479, 38.442]) circle(r=0.397);
-            translate([32.028, 38.381]) circle(r=0.397);
-            translate([32.855, 38.426]) circle(r=0.397);
+            translate([75.795, 48.919]) circle(r=0.149);
+            translate([74.115, 48.482]) circle(r=0.149);
+            translate([72.435, 48.046]) circle(r=0.149);
+            translate([70.755, 47.609]) circle(r=0.149);
+            translate([69.075, 47.173]) circle(r=0.149);
+            translate([67.396, 46.736]) circle(r=0.149);
+            translate([65.716, 46.300]) circle(r=0.149);
+            translate([64.036, 45.863]) circle(r=0.149);
+            translate([62.356, 45.427]) circle(r=0.149);
+            translate([60.676, 44.990]) circle(r=0.149);
+            translate([58.997, 44.554]) circle(r=0.149);
+            translate([57.317, 44.117]) circle(r=0.149);
+            translate([55.637, 43.681]) circle(r=0.149);
+            translate([53.957, 43.244]) circle(r=0.149);
+            translate([52.277, 42.808]) circle(r=0.149);
+            translate([50.598, 42.371]) circle(r=0.149);
+            translate([48.918, 41.935]) circle(r=0.149);
+            translate([47.238, 41.498]) circle(r=0.149);
+            translate([45.558, 41.062]) circle(r=0.149);
+            translate([43.878, 40.625]) circle(r=0.149);
+            translate([42.199, 40.189]) circle(r=0.149);
+            translate([40.519, 39.752]) circle(r=0.149);
+            translate([38.839, 39.316]) circle(r=0.149);
+            translate([37.159, 38.879]) circle(r=0.149);
+            translate([35.479, 38.442]) circle(r=0.149);
+            translate([32.028, 38.381]) circle(r=0.149);
+            translate([32.260, 38.423]) circle(r=0.149);
         }
         // Arrowhead 2
-        polygon([[30.871, 38.414], [32.860, 37.732], [32.851, 39.121]]);
+        polygon([[30.871, 38.414], [32.263, 37.937], [32.257, 38.909]]);
 
         // Number 3
         translate([65.735, 37.005])
-            text("3", size=4.46, halign="center", valign="center", font="Arial:style=Bold");
+            text("3", size=2.98, halign="center", valign="center", font="Arial:style=Bold");
 
         // Arrow 3
         hull() {
-            translate([65.422, 41.199]) circle(r=0.397);
-            translate([65.440, 43.044]) circle(r=0.397);
-            translate([65.458, 44.888]) circle(r=0.397);
-            translate([65.476, 46.733]) circle(r=0.397);
-            translate([65.494, 48.577]) circle(r=0.397);
-            translate([65.512, 50.422]) circle(r=0.397);
-            translate([65.531, 52.266]) circle(r=0.397);
-            translate([65.549, 54.111]) circle(r=0.397);
-            translate([65.567, 55.955]) circle(r=0.397);
-            translate([65.585, 57.799]) circle(r=0.397);
-            translate([65.603, 59.644]) circle(r=0.397);
-            translate([65.621, 61.488]) circle(r=0.397);
-            translate([65.640, 63.333]) circle(r=0.397);
-            translate([65.658, 65.177]) circle(r=0.397);
-            translate([65.676, 67.022]) circle(r=0.397);
-            translate([65.694, 68.866]) circle(r=0.397);
-            translate([65.712, 70.711]) circle(r=0.397);
-            translate([65.730, 72.555]) circle(r=0.397);
-            translate([65.749, 74.400]) circle(r=0.397);
-            translate([65.767, 76.244]) circle(r=0.397);
-            translate([65.901, 78.064]) circle(r=0.397);
-            translate([66.627, 79.760]) circle(r=0.397);
-            translate([67.354, 81.455]) circle(r=0.397);
-            translate([68.356, 82.409]) circle(r=0.397);
-            translate([70.013, 81.599]) circle(r=0.397);
-            translate([73.326, 79.977]) circle(r=0.397);
-            translate([72.648, 80.309]) circle(r=0.397);
+            translate([65.422, 41.199]) circle(r=0.149);
+            translate([65.440, 43.044]) circle(r=0.149);
+            translate([65.458, 44.888]) circle(r=0.149);
+            translate([65.476, 46.733]) circle(r=0.149);
+            translate([65.494, 48.577]) circle(r=0.149);
+            translate([65.512, 50.422]) circle(r=0.149);
+            translate([65.531, 52.266]) circle(r=0.149);
+            translate([65.549, 54.111]) circle(r=0.149);
+            translate([65.567, 55.955]) circle(r=0.149);
+            translate([65.585, 57.799]) circle(r=0.149);
+            translate([65.603, 59.644]) circle(r=0.149);
+            translate([65.621, 61.488]) circle(r=0.149);
+            translate([65.640, 63.333]) circle(r=0.149);
+            translate([65.658, 65.177]) circle(r=0.149);
+            translate([65.676, 67.022]) circle(r=0.149);
+            translate([65.694, 68.866]) circle(r=0.149);
+            translate([65.712, 70.711]) circle(r=0.149);
+            translate([65.730, 72.555]) circle(r=0.149);
+            translate([65.749, 74.400]) circle(r=0.149);
+            translate([65.767, 76.244]) circle(r=0.149);
+            translate([65.901, 78.064]) circle(r=0.149);
+            translate([66.627, 79.760]) circle(r=0.149);
+            translate([67.354, 81.455]) circle(r=0.149);
+            translate([68.356, 82.409]) circle(r=0.149);
+            translate([70.013, 81.599]) circle(r=0.149);
+            translate([73.326, 79.977]) circle(r=0.149);
+            translate([73.183, 80.047]) circle(r=0.149);
         }
         // Arrowhead 3
-        polygon([[74.431, 79.436], [72.954, 80.933], [72.343, 79.685]]);
+        polygon([[74.431, 79.436], [73.397, 80.484], [72.969, 79.610]]);
 
         // Number 4
         translate([88.549, 70.064])
-            text("4", size=4.46, halign="center", valign="center", font="Arial:style=Bold");
+            text("4", size=2.98, halign="center", valign="center", font="Arial:style=Bold");
 
         // Arrow 4
         hull() {
-            translate([85.628, 70.514]) circle(r=0.397);
-            translate([84.455, 70.116]) circle(r=0.397);
-            translate([83.296, 69.605]) circle(r=0.397);
-            translate([82.137, 69.095]) circle(r=0.397);
-            translate([80.979, 68.584]) circle(r=0.397);
-            translate([79.820, 68.073]) circle(r=0.397);
-            translate([78.661, 67.563]) circle(r=0.397);
-            translate([77.503, 67.052]) circle(r=0.397);
-            translate([76.344, 66.541]) circle(r=0.397);
-            translate([75.185, 66.031]) circle(r=0.397);
-            translate([74.027, 65.520]) circle(r=0.397);
-            translate([72.868, 65.009]) circle(r=0.397);
-            translate([71.709, 64.499]) circle(r=0.397);
-            translate([70.551, 63.988]) circle(r=0.397);
-            translate([69.392, 63.477]) circle(r=0.397);
-            translate([68.233, 62.967]) circle(r=0.397);
-            translate([67.075, 62.456]) circle(r=0.397);
-            translate([65.916, 61.945]) circle(r=0.397);
-            translate([64.757, 61.435]) circle(r=0.397);
-            translate([63.599, 60.924]) circle(r=0.397);
-            translate([62.440, 60.413]) circle(r=0.397);
-            translate([61.281, 59.903]) circle(r=0.397);
-            translate([60.123, 59.392]) circle(r=0.397);
-            translate([58.964, 58.881]) circle(r=0.397);
-            translate([57.805, 58.371]) circle(r=0.397);
-            translate([55.488, 57.349]) circle(r=0.397);
-            translate([56.531, 57.809]) circle(r=0.397);
+            translate([85.628, 70.514]) circle(r=0.149);
+            translate([84.455, 70.116]) circle(r=0.149);
+            translate([83.296, 69.605]) circle(r=0.149);
+            translate([82.137, 69.095]) circle(r=0.149);
+            translate([80.979, 68.584]) circle(r=0.149);
+            translate([79.820, 68.073]) circle(r=0.149);
+            translate([78.661, 67.563]) circle(r=0.149);
+            translate([77.503, 67.052]) circle(r=0.149);
+            translate([76.344, 66.541]) circle(r=0.149);
+            translate([75.185, 66.031]) circle(r=0.149);
+            translate([74.027, 65.520]) circle(r=0.149);
+            translate([72.868, 65.009]) circle(r=0.149);
+            translate([71.709, 64.499]) circle(r=0.149);
+            translate([70.551, 63.988]) circle(r=0.149);
+            translate([69.392, 63.477]) circle(r=0.149);
+            translate([68.233, 62.967]) circle(r=0.149);
+            translate([67.075, 62.456]) circle(r=0.149);
+            translate([65.916, 61.945]) circle(r=0.149);
+            translate([64.757, 61.435]) circle(r=0.149);
+            translate([63.599, 60.924]) circle(r=0.149);
+            translate([62.440, 60.413]) circle(r=0.149);
+            translate([61.281, 59.903]) circle(r=0.149);
+            translate([60.123, 59.392]) circle(r=0.149);
+            translate([58.964, 58.881]) circle(r=0.149);
+            translate([57.805, 58.371]) circle(r=0.149);
+            translate([55.488, 57.349]) circle(r=0.149);
+            translate([55.987, 57.569]) circle(r=0.149);
         }
         // Arrowhead 4
-        polygon([[54.715, 57.009], [56.811, 57.174], [56.251, 58.445]]);
+        polygon([[54.715, 57.009], [56.183, 57.124], [55.791, 58.014]]);
 
         // Number 5
         translate([48.303, 16.139])
-            text("5", size=4.46, halign="center", valign="center", font="Arial:style=Bold");
+            text("5", size=2.98, halign="center", valign="center", font="Arial:style=Bold");
 
         // Arrow 5
         hull() {
-            translate([48.245, 23.755]) circle(r=0.397);
-            translate([48.221, 27.018]) circle(r=0.397);
-            translate([47.711, 30.242]) circle(r=0.397);
-            translate([47.191, 33.464]) circle(r=0.397);
-            translate([46.670, 36.686]) circle(r=0.397);
-            translate([46.150, 39.909]) circle(r=0.397);
-            translate([45.630, 43.131]) circle(r=0.397);
-            translate([45.078, 46.346]) circle(r=0.397);
-            translate([44.094, 49.458]) circle(r=0.397);
-            translate([43.110, 52.570]) circle(r=0.397);
-            translate([42.126, 55.682]) circle(r=0.397);
-            translate([41.142, 58.795]) circle(r=0.397);
-            translate([39.817, 61.769]) circle(r=0.397);
-            translate([38.366, 64.693]) circle(r=0.397);
-            translate([36.916, 67.617]) circle(r=0.397);
-            translate([35.465, 70.541]) circle(r=0.397);
-            translate([33.861, 73.374]) circle(r=0.397);
-            translate([31.977, 76.039]) circle(r=0.397);
-            translate([30.017, 78.642]) circle(r=0.397);
-            translate([27.746, 80.986]) circle(r=0.397);
-            translate([25.475, 83.330]) circle(r=0.397);
-            translate([22.998, 85.431]) circle(r=0.397);
-            translate([20.263, 87.180]) circle(r=0.397);
-            translate([17.087, 87.936]) circle(r=0.397);
-            translate([15.605, 85.697]) circle(r=0.397);
-            translate([13.906, 79.407]) circle(r=0.397);
-            translate([14.001, 79.191]) circle(r=0.397);
+            translate([48.245, 23.755]) circle(r=0.149);
+            translate([48.221, 27.018]) circle(r=0.149);
+            translate([47.711, 30.242]) circle(r=0.149);
+            translate([47.191, 33.464]) circle(r=0.149);
+            translate([46.670, 36.686]) circle(r=0.149);
+            translate([46.150, 39.909]) circle(r=0.149);
+            translate([45.630, 43.131]) circle(r=0.149);
+            translate([45.078, 46.346]) circle(r=0.149);
+            translate([44.094, 49.458]) circle(r=0.149);
+            translate([43.110, 52.570]) circle(r=0.149);
+            translate([42.126, 55.682]) circle(r=0.149);
+            translate([41.142, 58.795]) circle(r=0.149);
+            translate([39.817, 61.769]) circle(r=0.149);
+            translate([38.366, 64.693]) circle(r=0.149);
+            translate([36.916, 67.617]) circle(r=0.149);
+            translate([35.465, 70.541]) circle(r=0.149);
+            translate([33.861, 73.374]) circle(r=0.149);
+            translate([31.977, 76.039]) circle(r=0.149);
+            translate([30.017, 78.642]) circle(r=0.149);
+            translate([27.746, 80.986]) circle(r=0.149);
+            translate([25.475, 83.330]) circle(r=0.149);
+            translate([22.998, 85.431]) circle(r=0.149);
+            translate([20.263, 87.180]) circle(r=0.149);
+            translate([17.087, 87.936]) circle(r=0.149);
+            translate([15.605, 85.697]) circle(r=0.149);
+            translate([13.906, 79.407]) circle(r=0.149);
+            translate([13.858, 78.613]) circle(r=0.149);
         }
         // Arrowhead 5
-        polygon([[13.526, 77.265], [14.675, 79.025], [13.326, 79.358]]);
+        polygon([[13.526, 77.265], [14.330, 78.497], [13.386, 78.730]]);
 
         // Number 6
         translate([28.900, 51.659])
-            text("6", size=4.46, halign="center", valign="center", font="Arial:style=Bold");
+            text("6", size=2.98, halign="center", valign="center", font="Arial:style=Bold");
 
         // Arrow 6
         hull() {
-            translate([29.312, 54.296]) circle(r=0.397);
-            translate([30.031, 55.341]) circle(r=0.397);
-            translate([30.750, 56.385]) circle(r=0.397);
-            translate([31.470, 57.429]) circle(r=0.397);
-            translate([32.189, 58.473]) circle(r=0.397);
-            translate([32.908, 59.518]) circle(r=0.397);
-            translate([33.627, 60.562]) circle(r=0.397);
-            translate([34.346, 61.606]) circle(r=0.397);
-            translate([35.066, 62.651]) circle(r=0.397);
-            translate([35.806, 63.676]) circle(r=0.397);
-            translate([36.762, 64.509]) circle(r=0.397);
-            translate([37.718, 65.342]) circle(r=0.397);
-            translate([38.674, 66.175]) circle(r=0.397);
-            translate([39.630, 67.008]) circle(r=0.397);
-            translate([40.586, 67.841]) circle(r=0.397);
-            translate([41.542, 68.674]) circle(r=0.397);
-            translate([42.498, 69.507]) circle(r=0.397);
-            translate([43.589, 70.145]) circle(r=0.397);
-            translate([44.708, 70.741]) circle(r=0.397);
-            translate([45.826, 71.338]) circle(r=0.397);
-            translate([46.945, 71.935]) circle(r=0.397);
-            translate([48.064, 72.532]) circle(r=0.397);
-            translate([49.183, 73.128]) circle(r=0.397);
-            translate([50.302, 73.725]) circle(r=0.397);
-            translate([51.421, 74.322]) circle(r=0.397);
-            translate([53.710, 75.387]) circle(r=0.397);
-            translate([52.692, 74.854]) circle(r=0.397);
+            translate([29.312, 54.296]) circle(r=0.149);
+            translate([30.031, 55.341]) circle(r=0.149);
+            translate([30.750, 56.385]) circle(r=0.149);
+            translate([31.470, 57.429]) circle(r=0.149);
+            translate([32.189, 58.473]) circle(r=0.149);
+            translate([32.908, 59.518]) circle(r=0.149);
+            translate([33.627, 60.562]) circle(r=0.149);
+            translate([34.346, 61.606]) circle(r=0.149);
+            translate([35.066, 62.651]) circle(r=0.149);
+            translate([35.806, 63.676]) circle(r=0.149);
+            translate([36.762, 64.509]) circle(r=0.149);
+            translate([37.718, 65.342]) circle(r=0.149);
+            translate([38.674, 66.175]) circle(r=0.149);
+            translate([39.630, 67.008]) circle(r=0.149);
+            translate([40.586, 67.841]) circle(r=0.149);
+            translate([41.542, 68.674]) circle(r=0.149);
+            translate([42.498, 69.507]) circle(r=0.149);
+            translate([43.589, 70.145]) circle(r=0.149);
+            translate([44.708, 70.741]) circle(r=0.149);
+            translate([45.826, 71.338]) circle(r=0.149);
+            translate([46.945, 71.935]) circle(r=0.149);
+            translate([48.064, 72.532]) circle(r=0.149);
+            translate([49.183, 73.128]) circle(r=0.149);
+            translate([50.302, 73.725]) circle(r=0.149);
+            translate([51.421, 74.322]) circle(r=0.149);
+            translate([53.710, 75.387]) circle(r=0.149);
+            translate([53.241, 75.083]) circle(r=0.149);
         }
         // Arrowhead 6
-        polygon([[54.523, 75.619], [52.424, 75.494], [52.960, 74.213]]);
+        polygon([[54.523, 75.619], [53.054, 75.532], [53.429, 74.635]]);
 
         // Number 7
         translate([32.397, 20.665])
-            text("7", size=4.46, halign="center", valign="center", font="Arial:style=Bold");
+            text("7", size=2.98, halign="center", valign="center", font="Arial:style=Bold");
 
         // Arrow 7
         hull() {
-            translate([30.389, 21.572]) circle(r=0.397);
-            translate([29.987, 21.754]) circle(r=0.397);
-            translate([29.585, 21.935]) circle(r=0.397);
-            translate([29.184, 22.116]) circle(r=0.397);
-            translate([28.782, 22.298]) circle(r=0.397);
-            translate([28.381, 22.479]) circle(r=0.397);
-            translate([27.979, 22.661]) circle(r=0.397);
-            translate([27.577, 22.842]) circle(r=0.397);
-            translate([27.178, 23.027]) circle(r=0.397);
-            translate([26.881, 23.353]) circle(r=0.397);
-            translate([26.584, 23.678]) circle(r=0.397);
-            translate([26.288, 24.004]) circle(r=0.397);
-            translate([25.991, 24.330]) circle(r=0.397);
-            translate([25.694, 24.655]) circle(r=0.397);
-            translate([25.397, 24.981]) circle(r=0.397);
-            translate([24.803, 25.632]) circle(r=0.397);
-            translate([25.942, 24.383]) circle(r=0.397);
+            translate([30.389, 21.572]) circle(r=0.149);
+            translate([29.987, 21.754]) circle(r=0.149);
+            translate([29.585, 21.935]) circle(r=0.149);
+            translate([29.184, 22.116]) circle(r=0.149);
+            translate([28.782, 22.298]) circle(r=0.149);
+            translate([28.381, 22.479]) circle(r=0.149);
+            translate([27.979, 22.661]) circle(r=0.149);
+            translate([27.577, 22.842]) circle(r=0.149);
+            translate([27.178, 23.027]) circle(r=0.149);
+            translate([26.881, 23.353]) circle(r=0.149);
+            translate([26.584, 23.678]) circle(r=0.149);
+            translate([26.288, 24.004]) circle(r=0.149);
+            translate([25.991, 24.330]) circle(r=0.149);
+            translate([25.694, 24.655]) circle(r=0.149);
+            translate([25.397, 24.981]) circle(r=0.149);
+            translate([24.803, 25.632]) circle(r=0.149);
+            translate([25.541, 24.823]) circle(r=0.149);
         }
         // Arrowhead 7
-        polygon([[24.605, 25.849], [25.429, 23.915], [26.455, 24.851]]);
+        polygon([[24.605, 25.849], [25.182, 24.495], [25.900, 25.151]]);
 
     }
 }
