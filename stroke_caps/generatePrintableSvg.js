@@ -40,19 +40,51 @@ function generatePrintableSvg(char, options = {}) {
     strokePaths += `
         <path d="${strokePath}" class="stroke"/>`;
 
-    // Generate full arrow following the median
-    const { linePath, headPath } = generateFullArrowPath(median, {
-      headSize: arrowSize,
-      endFraction: 0.92
-    });
+    // Position number at 12% along the stroke path (inside the stroke, not at edge)
+    const numberPosition = interpolateMedianPoint(median, 0.12);
+    const [numX, numY] = numberPosition;
+
+    // Generate arrow starting AFTER the number (from 20% to 92%)
+    const arrowStartPoint = interpolateMedianPoint(median, 0.20);
+    const arrowEndPoint = interpolateMedianPoint(median, 0.92);
+
+    // Build arrow line path from 20% to ~87% (leaving room for arrowhead)
+    let linePath = `M ${arrowStartPoint[0]} ${arrowStartPoint[1]}`;
+    for (let t = 0.25; t <= 0.87; t += 0.05) {
+      const pt = interpolateMedianPoint(median, t);
+      linePath += ` L ${pt[0]} ${pt[1]}`;
+    }
+    const arrowBasePoint = interpolateMedianPoint(median, 0.87);
+    linePath += ` L ${arrowBasePoint[0]} ${arrowBasePoint[1]}`;
+
+    // Calculate arrowhead direction and position
+    const directionPoint = interpolateMedianPoint(median, 0.82);
+    const dx = arrowEndPoint[0] - directionPoint[0];
+    const dy = arrowEndPoint[1] - directionPoint[1];
+    const length = Math.sqrt(dx * dx + dy * dy);
+    const dirX = length > 0 ? dx / length : 1;
+    const dirY = length > 0 ? dy / length : 0;
+
+    // Generate arrowhead
+    const headWidth = arrowSize * 0.7;
+    const perpX = -dirY;
+    const perpY = dirX;
+    const tipX = arrowEndPoint[0];
+    const tipY = arrowEndPoint[1];
+    const baseX = arrowEndPoint[0] - dirX * arrowSize;
+    const baseY = arrowEndPoint[1] - dirY * arrowSize;
+    const wing1X = baseX + perpX * (headWidth / 2);
+    const wing1Y = baseY + perpY * (headWidth / 2);
+    const wing2X = baseX - perpX * (headWidth / 2);
+    const wing2Y = baseY - perpY * (headWidth / 2);
+    const headPath = `M ${tipX} ${tipY} L ${wing1X} ${wing1Y} L ${wing2X} ${wing2Y} Z`;
 
     // Add white arrow (no outline needed since it's inside black stroke)
     arrows += `
         <path d="${linePath}" class="arrow-line"/>
         <path d="${headPath}" class="arrow-head"/>`;
 
-    // Add stroke number at start of stroke (centered on the arrow start)
-    const [numX, numY] = median[0];
+    // Add stroke number centered inside the stroke
     arrows += `
         <text x="${numX}" y="${numY}" class="stroke-number" style="transform-origin:${numX}px ${numY}px; transform:scale(1,-1);">${strokeNum}</text>`;
   }
