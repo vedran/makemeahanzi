@@ -76,40 +76,41 @@ function generatePrintableSvg(char, options = {}) {
     const numberPosition = interpolateMedianPoint(median, numberPercent);
     const [numX, numY] = numberPosition;
 
-    // Arrow end point (leave room for arrowhead)
-    const arrowEndPercent = 0.88;
-    const arrowEndPoint = interpolateMedianPoint(median, arrowEndPercent);
+    // Arrow tip position (where arrowhead points to)
+    const arrowTipPercent = 0.90;
+    const arrowTipPoint = interpolateMedianPoint(median, arrowTipPercent);
 
-    // Build arrow line path
-    const arrowStartPoint = interpolateMedianPoint(median, arrowStartPercent);
-    let linePath = `M ${arrowStartPoint[0]} ${arrowStartPoint[1]}`;
-
-    // Add intermediate points along the path
-    for (let t = arrowStartPercent + 0.05; t <= arrowEndPercent - 0.05; t += 0.05) {
-      const pt = interpolateMedianPoint(median, t);
-      linePath += ` L ${pt[0]} ${pt[1]}`;
-    }
-
-    // End the line at the arrowhead base position
-    const arrowBasePoint = interpolateMedianPoint(median, arrowEndPercent - 0.03);
-    linePath += ` L ${arrowBasePoint[0]} ${arrowBasePoint[1]}`;
-
-    // Calculate arrowhead direction and position
-    const directionPoint = interpolateMedianPoint(median, arrowEndPercent - 0.08);
-    const dx = arrowEndPoint[0] - directionPoint[0];
-    const dy = arrowEndPoint[1] - directionPoint[1];
+    // Calculate arrowhead direction from points just before the tip
+    const directionPoint = interpolateMedianPoint(median, arrowTipPercent - 0.08);
+    const dx = arrowTipPoint[0] - directionPoint[0];
+    const dy = arrowTipPoint[1] - directionPoint[1];
     const length = Math.sqrt(dx * dx + dy * dy);
     const dirX = length > 0 ? dx / length : 1;
     const dirY = length > 0 ? dy / length : 0;
 
-    // Generate arrowhead - position it so base connects with line
+    // Calculate arrowhead base position (where line should end)
     const headWidth = arrowSize * 0.7;
     const perpX = -dirY;
     const perpY = dirX;
-    const tipX = arrowEndPoint[0];
-    const tipY = arrowEndPoint[1];
+    const tipX = arrowTipPoint[0];
+    const tipY = arrowTipPoint[1];
     const baseX = tipX - dirX * arrowSize;
     const baseY = tipY - dirY * arrowSize;
+
+    // Build arrow line path - end exactly at arrowhead base
+    const arrowStartPoint = interpolateMedianPoint(median, arrowStartPercent);
+    let linePath = `M ${arrowStartPoint[0]} ${arrowStartPoint[1]}`;
+
+    // Add intermediate points along the path up to near the arrowhead
+    for (let t = arrowStartPercent + 0.05; t <= arrowTipPercent - 0.10; t += 0.05) {
+      const pt = interpolateMedianPoint(median, t);
+      linePath += ` L ${pt[0]} ${pt[1]}`;
+    }
+
+    // End the line exactly at the arrowhead base
+    linePath += ` L ${baseX} ${baseY}`;
+
+    // Generate arrowhead
     const wing1X = baseX + perpX * (headWidth / 2);
     const wing1Y = baseY + perpY * (headWidth / 2);
     const wing2X = baseX - perpX * (headWidth / 2);
