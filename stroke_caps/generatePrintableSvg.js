@@ -77,7 +77,8 @@ function generatePrintableSvg(char, options = {}) {
     const [numX, numY] = numberPosition;
 
     // Arrow tip position (where arrowhead points to)
-    const arrowTipPercent = 0.90;
+    // Use 95% to capture curves/hooks at stroke ends
+    const arrowTipPercent = 0.95;
     const arrowTipPoint = interpolateMedianPoint(median, arrowTipPercent);
 
     // Calculate arrowhead direction from points just before the tip
@@ -101,11 +102,15 @@ function generatePrintableSvg(char, options = {}) {
     const arrowStartPoint = interpolateMedianPoint(median, arrowStartPercent);
     let linePath = `M ${arrowStartPoint[0]} ${arrowStartPoint[1]}`;
 
-    // Add intermediate points along the path up to near the arrowhead
-    for (let t = arrowStartPercent + 0.05; t <= arrowTipPercent - 0.10; t += 0.05) {
+    // Add intermediate points along the path - use finer steps near the end to capture curves
+    for (let t = arrowStartPercent + 0.05; t <= arrowTipPercent - 0.05; t += 0.03) {
       const pt = interpolateMedianPoint(median, t);
       linePath += ` L ${pt[0]} ${pt[1]}`;
     }
+
+    // Add final point just before arrowhead
+    const nearTipPoint = interpolateMedianPoint(median, arrowTipPercent - 0.02);
+    linePath += ` L ${nearTipPoint[0]} ${nearTipPoint[1]}`;
 
     // End the line exactly at the arrowhead base
     linePath += ` L ${baseX} ${baseY}`;
