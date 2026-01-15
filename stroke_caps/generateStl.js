@@ -223,9 +223,9 @@ module arrows_and_numbers() {
     // Build arrow line as a thick path (series of circles connected)
     scadCode += `        // Arrow ${strokeNum}\n`;
 
-    // Generate arrow line points
+    // Generate arrow line points (fine sampling for smooth curves)
     const arrowPoints = [];
-    for (let t = arrowStartPercent; t <= arrowTipPercent - 0.05; t += 0.03) {
+    for (let t = arrowStartPercent; t <= arrowTipPercent - 0.05; t += 0.01) {
       arrowPoints.push(interpolateMedianPoint(median, t));
     }
     arrowPoints.push(interpolateMedianPoint(median, arrowTipPercent - 0.02));
