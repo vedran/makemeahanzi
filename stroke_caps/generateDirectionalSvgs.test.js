@@ -150,10 +150,15 @@ describe('Directional SVG Generation', () => {
   test('SVG contains arrows for each stroke', () => {
     const svg = generateDirectionalSvg('我');
 
-    // Should have 7 arrows for 7 strokes
-    const arrowMatches = svg.match(/class="arrow arrow-\d+"/g);
-    assert.ok(arrowMatches, 'Should have arrow elements');
-    assert.strictEqual(arrowMatches.length, 7, '我 should have 7 arrows');
+    // Should have 7 arrows for 7 strokes (count arrowheads)
+    const arrowHeadMatches = svg.match(/class="arrow-head arrow-\d+"/g);
+    assert.ok(arrowHeadMatches, 'Should have arrow head elements');
+    assert.strictEqual(arrowHeadMatches.length, 7, '我 should have 7 arrow heads');
+
+    // Should also have arrow lines
+    const arrowLineMatches = svg.match(/class="arrow-line arrow-\d+"/g);
+    assert.ok(arrowLineMatches, 'Should have arrow line elements');
+    assert.strictEqual(arrowLineMatches.length, 7, '我 should have 7 arrow lines');
   });
 
   test('generates valid SVG for character 是', () => {
@@ -164,8 +169,8 @@ describe('Directional SVG Generation', () => {
     const strokePathMatches = svg.match(/class="stroke-\d+"/g);
     assert.strictEqual(strokePathMatches.length, 9, '是 should have 9 stroke paths');
 
-    const arrowMatches = svg.match(/class="arrow arrow-\d+"/g);
-    assert.strictEqual(arrowMatches.length, 9, '是 should have 9 arrows');
+    const arrowHeadMatches = svg.match(/class="arrow-head arrow-\d+"/g);
+    assert.strictEqual(arrowHeadMatches.length, 9, '是 should have 9 arrow heads');
   });
 
   test('generates valid SVG for character 你', () => {
@@ -176,8 +181,8 @@ describe('Directional SVG Generation', () => {
     const strokePathMatches = svg.match(/class="stroke-\d+"/g);
     assert.strictEqual(strokePathMatches.length, 7, '你 should have 7 stroke paths');
 
-    const arrowMatches = svg.match(/class="arrow arrow-\d+"/g);
-    assert.strictEqual(arrowMatches.length, 7, '你 should have 7 arrows');
+    const arrowHeadMatches = svg.match(/class="arrow-head arrow-\d+"/g);
+    assert.strictEqual(arrowHeadMatches.length, 7, '你 should have 7 arrow heads');
   });
 
   test('SVG uses correct coordinate transform', () => {

@@ -50,11 +50,12 @@ function getCharacterData(char) {
 }
 
 /**
- * Calculate arrow direction from median points
+ * Calculate arrow direction from median points (uses last two points for end direction)
  * @param {Array<Array<number>>} median - Array of [x, y] points
+ * @param {boolean} fromEnd - If true, calculate direction at end of stroke (default true)
  * @returns {{dx: number, dy: number}} Normalized direction vector
  */
-function calculateArrowDirection(median) {
+function calculateArrowDirection(median, fromEnd = true) {
   if (!median || median.length === 0) {
     return { dx: 1, dy: 0 }; // Default to pointing right
   }
@@ -63,9 +64,17 @@ function calculateArrowDirection(median) {
     return { dx: 1, dy: 0 }; // Default to pointing right for single point
   }
 
-  // Use first two points to determine initial direction
-  const [x1, y1] = median[0];
-  const [x2, y2] = median[1];
+  let x1, y1, x2, y2;
+
+  if (fromEnd && median.length >= 2) {
+    // Use last two points for direction at end of stroke
+    [x1, y1] = median[median.length - 2];
+    [x2, y2] = median[median.length - 1];
+  } else {
+    // Use first two points
+    [x1, y1] = median[0];
+    [x2, y2] = median[1];
+  }
 
   const dx = x2 - x1;
   const dy = y2 - y1;
@@ -83,7 +92,7 @@ function calculateArrowDirection(median) {
 }
 
 /**
- * Generate SVG path for an arrow
+ * Generate SVG path for an arrow (simple triangular arrowhead)
  * @param {Array<number>} startPoint - [x, y] position for arrow
  * @param {{dx: number, dy: number}} direction - Normalized direction vector
  * @param {Object} options - Arrow options
@@ -122,6 +131,126 @@ function generateArrowPath(startPoint, direction, options = {}) {
 }
 
 /**
+ * Interpolate a point along the median at a given fraction (0 to 1)
+ * @param {Array<Array<number>>} median - Array of [x, y] points
+ * @param {number} fraction - Position along path (0 = start, 1 = end)
+ * @returns {Array<number>} [x, y] interpolated point
+ */
+function interpolateMedianPoint(median, fraction) {
+  if (median.length === 0) return [0, 0];
+  if (median.length === 1) return median[0];
+  if (fraction <= 0) return median[0];
+  if (fraction >= 1) return median[median.length - 1];
+
+  // Calculate total path length
+  let totalLength = 0;
+  const segmentLengths = [];
+  for (let i = 1; i < median.length; i++) {
+    const [x1, y1] = median[i - 1];
+    const [x2, y2] = median[i];
+    const segLen = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+    segmentLengths.push(segLen);
+    totalLength += segLen;
+  }
+
+  // Find target distance
+  const targetDist = fraction * totalLength;
+  let accumulatedDist = 0;
+
+  for (let i = 0; i < segmentLengths.length; i++) {
+    const segLen = segmentLengths[i];
+    if (accumulatedDist + segLen >= targetDist) {
+      // Interpolate within this segment
+      const segFraction = (targetDist - accumulatedDist) / segLen;
+      const [x1, y1] = median[i];
+      const [x2, y2] = median[i + 1];
+      return [
+        x1 + (x2 - x1) * segFraction,
+        y1 + (y2 - y1) * segFraction
+      ];
+    }
+    accumulatedDist += segLen;
+  }
+
+  return median[median.length - 1];
+}
+
+/**
+ * Generate a full arrow path that follows the median from start to near end
+ * @param {Array<Array<number>>} median - Array of [x, y] points
+ * @param {Object} options - Arrow options
+ * @param {number} options.headSize - Arrowhead size (default 25)
+ * @param {number} options.strokeWidth - Arrow line width (default 6)
+ * @param {number} options.endFraction - How far along the stroke to go (default 0.9)
+ * @returns {{linePath: string, headPath: string}} SVG paths for line and arrowhead
+ */
+function generateFullArrowPath(median, options = {}) {
+  const headSize = options.headSize || 25;
+  const endFraction = options.endFraction || 0.9;
+
+  if (!median || median.length < 2) {
+    // Fallback for very short strokes
+    const point = median && median[0] ? median[0] : [500, 500];
+    return {
+      linePath: `M ${point[0]} ${point[1]} L ${point[0] + 30} ${point[1]}`,
+      headPath: `M ${point[0] + 30} ${point[1]} L ${point[0] + 20} ${point[1] - 10} L ${point[0] + 20} ${point[1] + 10} Z`
+    };
+  }
+
+  // Get the endpoint (at endFraction of the path)
+  const endPoint = interpolateMedianPoint(median, endFraction);
+
+  // Calculate direction at the end for the arrowhead
+  // Use a point slightly before the end to get direction
+  const directionPoint = interpolateMedianPoint(median, Math.max(0, endFraction - 0.1));
+  const dx = endPoint[0] - directionPoint[0];
+  const dy = endPoint[1] - directionPoint[1];
+  const length = Math.sqrt(dx * dx + dy * dy);
+  const dirX = length > 0 ? dx / length : 1;
+  const dirY = length > 0 ? dy / length : 0;
+
+  // Build the line path following the median
+  let linePath = `M ${median[0][0]} ${median[0][1]}`;
+
+  // Add points up to but not including the arrowhead area
+  for (let i = 1; i < median.length; i++) {
+    const [x, y] = median[i];
+    // Check if this point is past our end fraction
+    const pointFraction = i / (median.length - 1);
+    if (pointFraction > endFraction - 0.05) {
+      break;
+    }
+    linePath += ` L ${x} ${y}`;
+  }
+
+  // Add the final interpolated point (where arrowhead base will be)
+  const arrowBasePoint = interpolateMedianPoint(median, endFraction - 0.05);
+  linePath += ` L ${arrowBasePoint[0]} ${arrowBasePoint[1]}`;
+
+  // Generate arrowhead at the end
+  const headWidth = headSize * 0.7;
+  const perpX = -dirY;
+  const perpY = dirX;
+
+  // Arrow tip is at endPoint
+  const tipX = endPoint[0];
+  const tipY = endPoint[1];
+
+  // Wings are at the base, perpendicular to direction
+  const baseX = endPoint[0] - dirX * headSize;
+  const baseY = endPoint[1] - dirY * headSize;
+
+  const wing1X = baseX + perpX * (headWidth / 2);
+  const wing1Y = baseY + perpY * (headWidth / 2);
+  const wing2X = baseX - perpX * (headWidth / 2);
+  const wing2Y = baseY - perpY * (headWidth / 2);
+
+  const headPath = `M ${tipX} ${tipY} L ${wing1X} ${wing1Y} L ${wing2X} ${wing2Y} Z`;
+
+  return { linePath, headPath };
+}
+
+/**
  * Generate CSS styles for the SVG
  * @param {number} strokeCount - Number of strokes
  * @returns {string} CSS style block
@@ -136,6 +265,25 @@ function generateStyles(strokeCount) {
 
   return `<style type="text/css">
         ${strokeStyles}
+        .arrow-line {
+            fill: none;
+            stroke: ${ARROW_COLOR};
+            stroke-width: 6px;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .arrow-line-outline {
+            fill: none;
+            stroke: ${ARROW_OUTLINE_COLOR};
+            stroke-width: 10px;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .arrow-head {
+            fill: ${ARROW_COLOR};
+            stroke: ${ARROW_OUTLINE_COLOR};
+            stroke-width: 2px;
+        }
         .arrow {
             fill: ${ARROW_COLOR};
             stroke: ${ARROW_OUTLINE_COLOR};
@@ -191,18 +339,21 @@ function generateDirectionalSvg(char, options = {}) {
     strokePaths += `
         <path d="${strokePath}" class="stroke-${strokeNum}"/>`;
 
-    // Calculate arrow direction and position
-    const direction = calculateArrowDirection(median);
-    const startPoint = median[0];
+    // Generate full arrow following the median
+    const { linePath, headPath } = generateFullArrowPath(median, {
+      headSize: arrowSize,
+      endFraction: 0.92
+    });
 
-    // Generate arrow
-    const arrowPath = generateArrowPath(startPoint, direction, { size: arrowSize });
+    // Add arrow with outline for visibility (outline first, then line on top)
     arrows += `
-        <path d="${arrowPath}" class="arrow arrow-${strokeNum}"/>`;
+        <path d="${linePath}" class="arrow-line-outline arrow-${strokeNum}"/>
+        <path d="${linePath}" class="arrow-line arrow-${strokeNum}"/>
+        <path d="${headPath}" class="arrow-head arrow-${strokeNum}"/>`;
 
-    // Add stroke number
+    // Add stroke number at start of stroke
     if (showNumbers) {
-      const [numX, numY] = startPoint;
+      const [numX, numY] = median[0];
       // Position number slightly offset from start point
       const offsetX = numX - 25;
       const offsetY = numY + 15;
@@ -314,6 +465,8 @@ if (require.main === module) {
 module.exports = {
   calculateArrowDirection,
   generateArrowPath,
+  generateFullArrowPath,
+  interpolateMedianPoint,
   generateDirectionalSvg,
   getCharacterData,
   generateSvgFile,
