@@ -1,0 +1,12 @@
+{
+  "name": "makemeahanzi",
+  "version": "1.0.0",
+  "description": "Chinese character stroke order data and SVG generation",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test",
+    "generate-directional": "node stroke_caps/generateDirectionalSvgs.js"
+  },
+  "keywords": ["chinese", "hanzi", "stroke-order", "svg"],
+  "license": "MIT"
+}
