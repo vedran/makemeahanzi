@@ -168,27 +168,29 @@ corner_radius = ${CORNER_RADIUS_MM};
 
 // Main module
 module character_tile() {
-    difference() {
-        // Base plate with rounded corners
-        rounded_plate();
+    union() {
+        difference() {
+            // Base plate with rounded corners
+            rounded_plate();
 
-        // Recessed character strokes (inlay color)
-        // Character is shifted up to make room for romanization below
-        translate([0, ${romanization ? romanAreaHeight.toFixed(2) : 0}, recess_start])
-            linear_extrude(height = plate_height_z)
-                character_strokes();
-
-        // Recessed arrows and numbers at SAME depth as strokes (base plate color)
-        // These cut through the stroke inlay to show base plate color
-        translate([0, ${romanization ? romanAreaHeight.toFixed(2) : 0}, recess_start])
-            linear_extrude(height = plate_height_z)
-                arrows_and_numbers();
+            // Recessed character strokes (inlay color)
+            // Character is shifted up to make room for romanization below
+            translate([0, ${romanization ? romanAreaHeight.toFixed(2) : 0}, recess_start])
+                linear_extrude(height = plate_height_z)
+                    character_strokes();
 ${romanization ? `
-        // Recessed romanization text (same color as strokes)
-        translate([0, 0, recess_start])
-            linear_extrude(height = plate_height_z)
-                romanization_text();
+            // Recessed romanization text (same color as strokes)
+            translate([0, 0, recess_start])
+                linear_extrude(height = plate_height_z)
+                    romanization_text();
 ` : ''}
+        }
+
+        // Add arrows and numbers as raised islands within stroke recesses
+        // These are at stroke level but in base plate color
+        translate([0, ${romanization ? romanAreaHeight.toFixed(2) : 0}, recess_start])
+            linear_extrude(height = plate_height_z - recess_start - 0.01)
+                arrows_and_numbers();
     }
 }
 
