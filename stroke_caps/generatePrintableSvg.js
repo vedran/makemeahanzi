@@ -27,7 +27,7 @@ function getMedianLength(median) {
  * Generate a printable SVG for a character (black strokes, white arrows/numbers)
  * Designed for 3D printing with two colors
  * @param {string} char - Character to generate SVG for
- * @param {Object} options - Generation options
+ * @param {Object} options - Generation options (including romanization)
  * @returns {string|null} SVG string or null if character not found
  */
 function generatePrintableSvg(char, options = {}) {
@@ -37,6 +37,7 @@ function generatePrintableSvg(char, options = {}) {
   }
 
   const arrowSize = options?.arrowSize || 14;
+  const romanization = options?.romanization || null;
   const { strokes, medians } = data;
   const strokeCount = strokes.length;
 
@@ -132,9 +133,15 @@ function generatePrintableSvg(char, options = {}) {
         <text x="${numX}" y="${numY}" class="stroke-number" style="transform-origin:${numX}px ${numY}px; transform:scale(1,-1);">${strokeNum}</text>`;
   }
 
+  // Calculate viewBox height - add space for romanization if present
+  const viewBoxHeight = romanization ? 1200 : 1024;
+  const romanText = romanization
+    ? `\n    <text x="512" y="1100" class="romanization">${romanization}</text>`
+    : '';
+
   // Assemble full SVG with white background
   const svg = `<?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1024 ${viewBoxHeight}" xmlns="http://www.w3.org/2000/svg">
     <style type="text/css">
         .background { fill: #FFFFFF; }
         .stroke { fill: #000000; }
@@ -157,12 +164,19 @@ function generatePrintableSvg(char, options = {}) {
             text-anchor: middle;
             dominant-baseline: middle;
         }
+        .romanization {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 100px;
+            fill: #000000;
+            font-weight: 600;
+            text-anchor: middle;
+        }
     </style>
-    <rect class="background" x="0" y="0" width="1024" height="1024"/>
+    <rect class="background" x="0" y="0" width="1024" height="${viewBoxHeight}"/>
     <g transform="scale(1, -1) translate(0, -900)">
         ${strokePaths}
         ${arrows}
-    </g>
+    </g>${romanText}
 </svg>`;
 
   return svg;
