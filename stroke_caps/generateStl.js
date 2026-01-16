@@ -200,9 +200,9 @@ module rounded_plate() {
                 square([plate_width, plate_height_y]);
 }
 ${romanization ? `
-// Romanization text (positioned at bottom, below character)
+// Romanization text (positioned at bottom of tile visually)
 module romanization_text() {
-    translate([plate_width / 2, ${romanTextY}])
+    translate([plate_width / 2, plate_height_y - ${romanTextY}])
         rotate([0, 0, 180])
             text("${romanization}", size=${romanTextSize}, halign="center", valign="center", font="Arial:style=Bold");
 }
