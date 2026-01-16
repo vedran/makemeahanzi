@@ -202,7 +202,8 @@ ${romanization ? `
 // Romanization text (positioned at bottom, below character)
 module romanization_text() {
     translate([plate_width / 2, ${romanTextY}])
-        text("${romanization}", size=${romanTextSize}, halign="center", valign="baseline", font="Arial:style=Bold");
+        rotate([0, 0, 180])
+            text("${romanization}", size=${romanTextSize}, halign="center", valign="baseline", font="Arial:style=Bold");
 }
 ` : ''}
 
