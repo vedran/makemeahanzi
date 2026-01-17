@@ -298,12 +298,36 @@ module arrows_and_numbers() {
     smoothedPoints = movingAverageSmooth(smoothedPoints, 5);
     smoothedPoints = movingAverageSmooth(smoothedPoints, 3);
 
-    // Create arrow line as sequential hulls between point pairs (follows curve properly)
-    const lineRadius = (arrowLineWidth / 2 * SCALE).toFixed(3);
-    for (let j = 0; j < smoothedPoints.length - 1; j++) {
-      const [px1, py1] = svgToModelCoords(smoothedPoints[j][0], smoothedPoints[j][1]);
-      const [px2, py2] = svgToModelCoords(smoothedPoints[j + 1][0], smoothedPoints[j + 1][1]);
-      scadCode += `        hull() { translate([${px1.toFixed(3)}, ${py1.toFixed(3)}]) circle(r=${lineRadius}); translate([${px2.toFixed(3)}, ${py2.toFixed(3)}]) circle(r=${lineRadius}); }\n`;
+    // Create dotted arrow line - place circles at regular intervals along the path
+    const dotRadius = (arrowLineWidth / 2 * SCALE).toFixed(3);
+    const dotSpacing = 30; // SVG units between dot centers (more spread out)
+    const dotSpacingMm = dotSpacing * SCALE;
+
+    // Calculate cumulative distances along the path
+    let cumulativeDistances = [0];
+    for (let j = 1; j < smoothedPoints.length; j++) {
+      const dx = smoothedPoints[j][0] - smoothedPoints[j-1][0];
+      const dy = smoothedPoints[j][1] - smoothedPoints[j-1][1];
+      cumulativeDistances.push(cumulativeDistances[j-1] + Math.sqrt(dx*dx + dy*dy));
+    }
+    const totalLength = cumulativeDistances[cumulativeDistances.length - 1];
+
+    // Place dots at regular intervals
+    for (let dist = 0; dist < totalLength; dist += dotSpacing) {
+      // Find the segment containing this distance
+      let segIdx = 0;
+      while (segIdx < cumulativeDistances.length - 1 && cumulativeDistances[segIdx + 1] < dist) {
+        segIdx++;
+      }
+      // Interpolate position within segment
+      const segStart = cumulativeDistances[segIdx];
+      const segEnd = cumulativeDistances[segIdx + 1] || segStart;
+      const segLen = segEnd - segStart;
+      const t = segLen > 0 ? (dist - segStart) / segLen : 0;
+      const px = smoothedPoints[segIdx][0] + t * (smoothedPoints[Math.min(segIdx + 1, smoothedPoints.length - 1)][0] - smoothedPoints[segIdx][0]);
+      const py = smoothedPoints[segIdx][1] + t * (smoothedPoints[Math.min(segIdx + 1, smoothedPoints.length - 1)][1] - smoothedPoints[segIdx][1]);
+      const [mx, my] = svgToModelCoords(px, py);
+      scadCode += `        translate([${mx.toFixed(3)}, ${my.toFixed(3)}]) circle(r=${dotRadius});\n`;
     }
 
     // Arrowhead
