@@ -262,13 +262,17 @@ module arrows_and_numbers() {
     const numberPos = interpolateMedianPoint(median, numberPercent);
     const [numX, numY] = svgToModelCoords(numberPos[0], numberPos[1]);
 
-    // Add stroke number (30px in SVG = ~3mm in model)
-    // Mirror the text since our coordinate system mirrors X
-    const textSize = 30 * SCALE;
-    scadCode += `        // Number ${strokeNum}\n`;
-    scadCode += `        translate([${numX.toFixed(3)}, ${numY.toFixed(3)}])\n`;
-    scadCode += `            rotate([0, 0, 180])\n`;
-    scadCode += `                text("${strokeNum}", size=${textSize.toFixed(2)}, halign="center", valign="center", font="Arial:style=Bold");\n\n`;
+    // Add stroke number inside a filled circle (badge style)
+    // The circle is filled, with the number cut out to show base plate color
+    const textSize = 24 * SCALE; // Slightly smaller text to fit in circle
+    const circleRadius = 18 * SCALE; // Circle radius to surround number
+    scadCode += `        // Number ${strokeNum} (filled circle with number cutout)\n`;
+    scadCode += `        difference() {\n`;
+    scadCode += `            translate([${numX.toFixed(3)}, ${numY.toFixed(3)}]) circle(r=${circleRadius.toFixed(3)});\n`;
+    scadCode += `            translate([${numX.toFixed(3)}, ${numY.toFixed(3)}])\n`;
+    scadCode += `                rotate([0, 0, 180])\n`;
+    scadCode += `                    text("${strokeNum}", size=${textSize.toFixed(2)}, halign="center", valign="center", font="Arial:style=Bold");\n`;
+    scadCode += `        }\n\n`;
 
     // Build arrow line as a thick path (series of circles connected)
     scadCode += `        // Arrow ${strokeNum}\n`;
