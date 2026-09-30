@@ -4,11 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const { parseSVG, makeAbsolute } = require('svg-path-parser');
 
-const {
-  getCharacterData,
-  generateFullArrowPath,
-  interpolateMedianPoint
-} = require('./generateDirectionalSvgs.js');
+const { getCharacterData } = require('./generateDirectionalSvgs.js');
+const { MARK, layoutMarkings } = require('./tileLayout.js');
 
 // Dimensions (in mm)
 const PLATE_SIZE_MM = 101.6; // 4 inches
@@ -16,6 +13,8 @@ const PLATE_HEIGHT_MM = 4;
 const RECESS_START_MM = 0.5;
 const RECESS_DEPTH_MM = 3.5; // Goes from 0.5mm to 4mm (full depth)
 const CORNER_RADIUS_MM = 8;
+const ROMAN_AREA_MM = 15; // band at the bottom of the tile for the romanization
+const ROMAN_TEXT_MM = 6;
 const SVG_SIZE = 1024; // SVG viewBox size
 
 // Scale factor from SVG units to mm
@@ -94,310 +93,140 @@ function svgToModelCoords(x, y) {
 }
 
 /**
- * Calculate median length for adaptive positioning
+ * Tile layout in final millimetres. The character is scaled down to leave a
+ * band for the romanization; the whole tile stays 4" x 4".
  */
-function getMedianLength(median) {
-  let totalLength = 0;
-  for (let i = 1; i < median.length; i++) {
-    const [x1, y1] = median[i - 1];
-    const [x2, y2] = median[i];
-    totalLength += Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-  }
-  return totalLength;
+function tileTransform(romanization) {
+  const charScale = romanization ? (PLATE_SIZE_MM - ROMAN_AREA_MM) / PLATE_SIZE_MM : 1.0;
+  const offsetX = romanization ? (PLATE_SIZE_MM * (1 - charScale)) / 2 : 0;
+  const offsetY = romanization ? ((PLATE_SIZE_MM - ROMAN_AREA_MM) * (1 - charScale)) / 2 : 0;
+  return (x, y) => {
+    const [mx, my] = svgToModelCoords(x, y);
+    return [offsetX + mx * charScale, offsetY + my * charScale];
+  };
 }
 
-/**
- * Simple moving average smoothing
- * @param {Array<Array<number>>} points - Points to smooth [[x,y], ...]
- * @param {number} windowSize - Number of points to average (should be odd)
- * @returns {Array<Array<number>>} Smoothed points
- */
-function movingAverageSmooth(points, windowSize = 5) {
-  if (points.length < windowSize) return points;
-
-  const halfWindow = Math.floor(windowSize / 2);
-  const result = [];
-
-  for (let i = 0; i < points.length; i++) {
-    let sumX = 0, sumY = 0, count = 0;
-    for (let j = Math.max(0, i - halfWindow); j <= Math.min(points.length - 1, i + halfWindow); j++) {
-      sumX += points[j][0];
-      sumY += points[j][1];
-      count++;
-    }
-    result.push([sumX / count, sumY / count]);
-  }
-
-  return result;
-}
+const fmt = (v) => v.toFixed(3);
+const pt = ([x, y]) => `[${fmt(x)}, ${fmt(y)}]`;
+const scadString = (s) => s.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 
 /**
- * Generate OpenSCAD code for a character
- * This can be compiled to STL using OpenSCAD CLI
+ * Generate OpenSCAD code for a character tile.
+ *
+ * The tile is two print bodies for a multi-material printer:
+ *   plate (filament 1): the plate, plus number badges, dashed lines and
+ *                       arrowheads showing through the stroke inlay
+ *   inlay (filament 2): the character strokes, the digits inside the badges,
+ *                       an outline ring around each badge, and the romanization
+ * Both are flush on top, so the markings can be seen but not felt.
+ *
+ * Select a body with -D 'part="plate_base"' / "plate_top" / "inlay";
+ * the default "all" shows the coloured tile in the OpenSCAD preview.
+ *
+ * @returns {{scad: string, layout: object}|null} OpenSCAD source and the
+ *   marking layout (with placement warnings) used to build it
  */
-function generateOpenScad(char, options = {}) {
+function buildTile(char, options = {}) {
   const data = getCharacterData(char);
   if (!data) {
     return null;
   }
 
   const { strokes, medians } = data;
-  const arrowSize = options.arrowSize || 14;
-  const arrowLineWidth = 3.0; // Width of arrow line in SVG units (~32% of typical stroke width)
   const romanization = options.romanization || null;
+  const toTile = tileTransform(romanization);
 
-  // Plate dimensions - always 4x4 inches square
-  const plateWidth = PLATE_SIZE_MM;
-  const plateHeight = PLATE_SIZE_MM; // Always square
-  const romanAreaHeight = 15; // Space for romanization text (mm)
-  const romanTextSize = 6; // Text size in mm
-  // Scale factor for character when romanization is present (fit in remaining space)
-  const charScale = romanization ? (PLATE_SIZE_MM - romanAreaHeight) / PLATE_SIZE_MM : 1.0;
-  // Centering offsets - character needs to be centered in its area
-  const centeringOffsetX = romanization ? (plateWidth * (1 - charScale) / 2) : 0;
-  const centeringOffsetY = romanization ? (plateHeight - romanAreaHeight) * (1 - charScale) / 2 : 0;
+  const strokePolys = strokes.map((s) => pathToPolygon(s).map(([x, y]) => toTile(x, y)));
+  const tileMedians = medians.map((m) => m.map(([x, y]) => toTile(x, y)));
+  const layout = layoutMarkings(strokePolys, tileMedians);
 
-  let scadCode = `// OpenSCAD file for character: ${char}
+  let scad = `// OpenSCAD file for character: ${char}
 // Generated by generateStl.js
-// Compile with: openscad -o output.stl input.scad
+// Preview: open in OpenSCAD (F5). Export bodies with
+//   openscad -D 'part="plate_base"' -o base.stl this.scad
+//   openscad -D 'part="plate_top"'  -o top.stl  this.scad
+//   openscad -D 'part="inlay"'      -o inlay.stl this.scad
 
-$fn = 32; // Smoothness for curves
+part = "all";
+$fn = 32;
 
-// Dimensions
-plate_width = ${plateWidth.toFixed(2)};
-plate_height_y = ${plateHeight.toFixed(2)};
+plate_size = ${PLATE_SIZE_MM.toFixed(2)};
 plate_height_z = ${PLATE_HEIGHT_MM};
 recess_start = ${RECESS_START_MM};
 corner_radius = ${CORNER_RADIUS_MM};
+ring_width = ${MARK.ringWidth};
+font = "Liberation Sans:style=Bold";
 
-// Main module
-module character_tile() {
+module plate_2d() {
+    offset(r = corner_radius) offset(r = -corner_radius) square([plate_size, plate_size]);
+}
+
+// Stroke-colour areas seen on the top surface
+module inlay_2d() {
     difference() {
-        // Base plate with rounded corners
-        rounded_plate();
-
-        // Recessed character strokes (will be filled with inlay color)
-        translate([${centeringOffsetX.toFixed(2)}, ${romanization ? centeringOffsetY.toFixed(2) : 0}, recess_start])
-            linear_extrude(height = plate_height_z)
-                scale([${charScale.toFixed(4)}, ${charScale.toFixed(4)}, 1])
-                    character_strokes();
-
-        // Recessed arrows/numbers at same depth as strokes
-        translate([${centeringOffsetX.toFixed(2)}, ${romanization ? centeringOffsetY.toFixed(2) : 0}, recess_start])
-            linear_extrude(height = plate_height_z)
-                scale([${charScale.toFixed(4)}, ${charScale.toFixed(4)}, 1])
-                    arrows_and_numbers();
-${romanization ? `
-        // Recessed romanization text (at top Y = visually at bottom of tile)
-        translate([plate_width / 2, plate_height_y - ${(romanAreaHeight / 2).toFixed(2)}, recess_start])
-            linear_extrude(height = plate_height_z)
-                rotate([0, 0, 180])
-                    text("${romanization}", size=${romanTextSize}, halign="center", valign="center", font="Arial:style=Bold");
-` : ''}
+        character_strokes();
+        badge_disks();
+        difference() { lines_and_heads(); offset(r = 0.5) badge_disks(); }
     }
-
-    // Red colored arrows/numbers showing through at recess floor level
-    color("red")
-        translate([${centeringOffsetX.toFixed(2)}, ${romanization ? centeringOffsetY.toFixed(2) : 0}, 0])
-            linear_extrude(height = recess_start)
-                scale([${charScale.toFixed(4)}, ${charScale.toFixed(4)}, 1])
-                    arrows_and_numbers();
+    badge_digits();
+    difference() { offset(r = ring_width) badge_disks(); badge_disks(); }
+    ${romanization ? 'romanization_text();' : ''}
 }
 
-// Rounded rectangle plate
-module rounded_plate() {
-    linear_extrude(height = plate_height_z)
-        offset(r = corner_radius)
-            offset(r = -corner_radius)
-                square([plate_width, plate_height_y]);
-}
-
-// Character strokes only
-module character_strokes() {
-    union() {
+if (part == "plate_base" || part == "all")
+    color("tan") linear_extrude(height = recess_start) plate_2d();
+if (part == "plate_top" || part == "all")
+    color("tan") translate([0, 0, recess_start])
+        linear_extrude(height = plate_height_z - recess_start) difference() { plate_2d(); inlay_2d(); }
+if (part == "inlay" || part == "all")
+    color("seagreen") translate([0, 0, recess_start])
+        linear_extrude(height = plate_height_z - recess_start) intersection() { plate_2d(); inlay_2d(); }
 `;
 
-  // Add each stroke as a polygon
-  for (let i = 0; i < strokes.length; i++) {
-    const strokePath = strokes[i];
-    const points = pathToPolygon(strokePath);
-
-    if (points.length > 2) {
-      scadCode += `        // Stroke ${i + 1}\n`;
-      scadCode += `        polygon([\n`;
-      for (let j = 0; j < points.length; j++) {
-        const [x, y] = svgToModelCoords(points[j][0], points[j][1]);
-        scadCode += `            [${x.toFixed(3)}, ${y.toFixed(3)}]${j < points.length - 1 ? ',' : ''}\n`;
-      }
-      scadCode += `        ]);\n\n`;
-    }
+  if (romanization) {
+    // Model +Y is the bottom of the tile when it is read upright, so text is
+    // rotated 180 degrees like the stroke numbers
+    scad += `
+module romanization_text() {
+    translate([plate_size / 2, plate_size - ${(ROMAN_AREA_MM / 2).toFixed(2)}])
+        rotate([0, 0, 180])
+            text("${scadString(romanization)}", size = ${ROMAN_TEXT_MM}, halign = "center", valign = "center", font = font);
+}
+`;
   }
 
-  scadCode += `    }
-}
-
-// Arrows and numbers (white inlay)
-module arrows_and_numbers() {
-    union() {
-`;
-
-  // Add arrows and numbers for each stroke
-  for (let i = 0; i < strokes.length; i++) {
-    const median = medians[i];
-    const strokeNum = i + 1;
-    const strokeLength = getMedianLength(median);
-
-    // Number at the start of stroke
-    const numberPercent = 0.05;
-
-    // Arrow at the end of stroke
-    const arrowTipPercent = 0.95;
-
-    // Dotted line starts immediately after number and ends at arrow
-    const numberRadius = 20; // SVG units - accounts for number size
-    const lineStartPercent = numberPercent + (numberRadius * 1.5) / strokeLength;
-    const lineEndPercent = arrowTipPercent - 0.05; // End just before arrowhead
-
-    // Number position
-    const numberPos = interpolateMedianPoint(median, numberPercent);
-    const [numX, numY] = svgToModelCoords(numberPos[0], numberPos[1]);
-
-    // Add stroke number inside a filled circle (badge style)
-    // The circle is filled, with the number cut out to show base plate color
-    const textSize = 24 * SCALE; // Slightly smaller text to fit in circle
-    const circleRadius = 18 * SCALE; // Circle radius to surround number
-    scadCode += `        // Number ${strokeNum} (filled circle with number cutout)\n`;
-    scadCode += `        difference() {\n`;
-    scadCode += `            translate([${numX.toFixed(3)}, ${numY.toFixed(3)}]) circle(r=${circleRadius.toFixed(3)});\n`;
-    scadCode += `            translate([${numX.toFixed(3)}, ${numY.toFixed(3)}])\n`;
-    scadCode += `                rotate([0, 0, 180])\n`;
-    scadCode += `                    text("${strokeNum}", size=${textSize.toFixed(2)}, halign="center", valign="center", font="Arial:style=Bold");\n`;
-    scadCode += `        }\n\n`;
-
-    // Build arrow line as a thick path (series of circles connected)
-    scadCode += `        // Arrow ${strokeNum}\n`;
-
-    // Sample points for dotted line - from immediately after number to arrow
-    const rawArrowPoints = [];
-    const effectiveStart = Math.max(0.15, Math.min(lineStartPercent, lineEndPercent - 0.05));
-    const effectiveEnd = lineEndPercent;
-    // Sample at fine intervals for smooth path
-    for (let t = effectiveStart; t <= effectiveEnd; t += 0.005) {
-      rawArrowPoints.push(interpolateMedianPoint(median, t));
-    }
-    // Always add the final point
-    rawArrowPoints.push(interpolateMedianPoint(median, effectiveEnd));
-
-    // Ensure we have at least 3 points
-    if (rawArrowPoints.length < 3) {
-      rawArrowPoints.length = 0;
-      rawArrowPoints.push(interpolateMedianPoint(median, effectiveStart));
-      rawArrowPoints.push(interpolateMedianPoint(median, (effectiveStart + effectiveEnd) / 2));
-      rawArrowPoints.push(interpolateMedianPoint(median, effectiveEnd));
-    }
-
-    // Arrow tip and direction
-    const arrowTipPoint = interpolateMedianPoint(median, arrowTipPercent);
-    const directionPoint = interpolateMedianPoint(median, arrowTipPercent - 0.08);
-    const dx = arrowTipPoint[0] - directionPoint[0];
-    const dy = arrowTipPoint[1] - directionPoint[1];
-    const len = Math.sqrt(dx * dx + dy * dy);
-    const dirX = len > 0 ? dx / len : 1;
-    const dirY = len > 0 ? dy / len : 0;
-
-    // Arrowhead base (used for arrowhead polygon, NOT for smoothed line)
-    const baseX = arrowTipPoint[0] - dirX * arrowSize;
-    const baseY = arrowTipPoint[1] - dirY * arrowSize;
-
-    // Apply moving average smoothing (multiple passes for extra smoothness)
-    let smoothedPoints = rawArrowPoints.length >= 7 ? movingAverageSmooth(rawArrowPoints, 7) : rawArrowPoints;
-    smoothedPoints = smoothedPoints.length >= 5 ? movingAverageSmooth(smoothedPoints, 5) : smoothedPoints;
-    smoothedPoints = smoothedPoints.length >= 3 ? movingAverageSmooth(smoothedPoints, 3) : smoothedPoints;
-
-    // Only draw dashed line if we have enough points
-    if (smoothedPoints.length >= 2) {
-      // Create dashed arrow line - evenly spaced dashes from number to arrowhead
-      const lineRadius = (arrowLineWidth / 2 * SCALE).toFixed(3);
-
-      // Calculate cumulative distances along the path
-      let cumulativeDistances = [0];
-      for (let j = 1; j < smoothedPoints.length; j++) {
-        const ddx = smoothedPoints[j][0] - smoothedPoints[j-1][0];
-        const ddy = smoothedPoints[j][1] - smoothedPoints[j-1][1];
-        cumulativeDistances.push(cumulativeDistances[j-1] + Math.sqrt(ddx*ddx + ddy*ddy));
-      }
-      const totalLength = cumulativeDistances[cumulativeDistances.length - 1];
-
-      // Helper to get point at distance along path
-      const getPointAtDist = (dist) => {
-        let segIdx = 0;
-        while (segIdx < cumulativeDistances.length - 1 && cumulativeDistances[segIdx + 1] < dist) {
-          segIdx++;
-        }
-        if (segIdx >= smoothedPoints.length) segIdx = smoothedPoints.length - 1;
-        const segStart = cumulativeDistances[segIdx];
-        const segEnd = cumulativeDistances[segIdx + 1] || segStart;
-        const segLen = segEnd - segStart;
-        const t = segLen > 0 ? (dist - segStart) / segLen : 0;
-        const nextIdx = Math.min(segIdx + 1, smoothedPoints.length - 1);
-        return [
-          smoothedPoints[segIdx][0] + t * (smoothedPoints[nextIdx][0] - smoothedPoints[segIdx][0]),
-          smoothedPoints[segIdx][1] + t * (smoothedPoints[nextIdx][1] - smoothedPoints[segIdx][1])
-        ];
-      };
-
-      // Calculate evenly spaced dashes along the entire path
-      const dashLength = 15; // SVG units - length of each dash
-      const gapLength = 10; // SVG units - gap between dashes
-      const cycleLength = dashLength + gapLength;
-
-      // Calculate how many complete cycles fit, then adjust to fill evenly
-      const numCycles = Math.max(1, Math.floor(totalLength / cycleLength));
-      const adjustedCycleLength = totalLength / numCycles;
-      const adjustedDashLength = adjustedCycleLength * (dashLength / cycleLength);
-
-      // Draw dashes - start at 0, end at totalLength
-      for (let d = 0; d < numCycles; d++) {
-        const dashStart = d * adjustedCycleLength;
-        const dashEnd = Math.min(dashStart + adjustedDashLength, totalLength);
-
-        if (dashEnd > dashStart) {
-          const [startX, startY] = getPointAtDist(dashStart);
-          const [endX, endY] = getPointAtDist(dashEnd);
-          const [msx, msy] = svgToModelCoords(startX, startY);
-          const [mex, mey] = svgToModelCoords(endX, endY);
-          scadCode += `        hull() { translate([${msx.toFixed(3)}, ${msy.toFixed(3)}]) circle(r=${lineRadius}); translate([${mex.toFixed(3)}, ${mey.toFixed(3)}]) circle(r=${lineRadius}); }\n`;
-        }
-      }
-    }
-
-    // Arrowhead
-    const headWidth = arrowSize * 0.7;
-    const perpX = -dirY;
-    const perpY = dirX;
-    const tipX = arrowTipPoint[0];
-    const tipY = arrowTipPoint[1];
-    const wing1X = baseX + perpX * (headWidth / 2);
-    const wing1Y = baseY + perpY * (headWidth / 2);
-    const wing2X = baseX - perpX * (headWidth / 2);
-    const wing2Y = baseY - perpY * (headWidth / 2);
-
-    const [mTipX, mTipY] = svgToModelCoords(tipX, tipY);
-    const [mWing1X, mWing1Y] = svgToModelCoords(wing1X, wing1Y);
-    const [mWing2X, mWing2Y] = svgToModelCoords(wing2X, wing2Y);
-
-    scadCode += `        // Arrowhead ${strokeNum}\n`;
-    scadCode += `        polygon([[${mTipX.toFixed(3)}, ${mTipY.toFixed(3)}], [${mWing1X.toFixed(3)}, ${mWing1Y.toFixed(3)}], [${mWing2X.toFixed(3)}, ${mWing2Y.toFixed(3)}]]);\n\n`;
+  scad += `\nmodule character_strokes() {\n`;
+  strokePolys.forEach((poly, i) => {
+    scad += `    // Stroke ${i + 1}\n    polygon([${poly.map(pt).join(', ')}]);\n`;
+  });
+  scad += `}\n\nmodule badge_disks() {\n`;
+  for (const s of layout.strokes) {
+    scad += `    translate(${pt(s.badge.center)}) circle(r = ${fmt(s.badge.r)}, $fn = 48); // ${s.number}\n`;
   }
+  scad += `}\n\nmodule badge_digits() {\n`;
+  for (const s of layout.strokes) {
+    const size = (s.number >= 10 ? MARK.digitSize2 : MARK.digitSize) * (s.badge.r / MARK.badgeRadius);
+    scad += `    translate(${pt(s.badge.center)}) rotate([0, 0, 180]) offset(delta = ${MARK.digitThicken}) text("${s.number}", size = ${fmt(size)}, halign = "center", valign = "center", font = font);\n`;
+  }
+  scad += `}\n\nmodule lines_and_heads() {\n`;
+  const r = fmt(MARK.dashWidth / 2);
+  for (const s of layout.strokes) {
+    scad += `    // Stroke ${s.number}: ${s.style} line\n`;
+    for (const line of s.lines) {
+      for (let k = 0; k < line.length - 1; k++) {
+        scad += `    hull() { translate(${pt(line[k])}) circle(r = ${r}, $fn = 16); translate(${pt(line[k + 1])}) circle(r = ${r}, $fn = 16); }\n`;
+      }
+    }
+    scad += `    polygon([${s.head.map(pt).join(', ')}]);\n`;
+  }
+  scad += `}\n`;
 
-  scadCode += `    }
+  return { scad, layout };
 }
 
-// Render the tile
-character_tile();
-`;
-
-  return scadCode;
+function generateOpenScad(char, options = {}) {
+  const tile = buildTile(char, options);
+  return tile ? tile.scad : null;
 }
 
 /**
@@ -562,6 +391,7 @@ if (require.main === module) {
 }
 
 module.exports = {
+  buildTile,
   generateOpenScad,
   generateBinaryStl,
   generateStlFiles,
